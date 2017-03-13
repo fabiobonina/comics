@@ -5,13 +5,13 @@ import 'rxjs/add/operator/map';
 import PouchDB from 'pouchdb';
 
 /*
-  Generated class for the Database provider.
+  Generated class for the DataCliente provider.
 
   See https://angular.io/docs/ts/latest/guide/dependency-injection.html
   for more info on providers and Angular 2 DI.
 */
 @Injectable()
-export class Database {
+export class DataCliente {
 
     public _DB 		    : any;
     private success 	: boolean = true;

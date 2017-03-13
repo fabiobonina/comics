@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Image } from '../../providers/image';
-import { Database } from '../../providers/database';
+import { DataCliente } from '../../providers/dataCliente';
 
 
 @Component({
-  selector: 'page-add',
-  templateUrl: 'add.html'
+  selector: 'page-addCliente',
+  templateUrl: 'addCliente.html'
 })
-export class AddPage {
+export class AddClientePage {
 
    public form             : FormGroup;
    public comicCharacter   : any;
@@ -29,7 +29,7 @@ export class AddPage {
                public NP         : NavParams,
                public fb         : FormBuilder,
                public IMAGE      : Image,
-               public DB         : Database,
+               public DB         : DataCliente,
                public toastCtrl  : ToastController)
    {
 

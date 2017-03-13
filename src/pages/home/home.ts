@@ -1,9 +1,5 @@
 import { Component } from '@angular/core';
 import { AlertController, NavController, ToastController } from 'ionic-angular';
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 import { Database } from '../../providers/database';
 import { AddPage } from '../../pages/add/add';
 
@@ -13,15 +9,6 @@ import { AddPage } from '../../pages/add/add';
 })
 export class HomePage {
 
-<<<<<<< HEAD
-  public hasComics: boolean = false;
-   public comics: any;
-
-   constructor(	public navCtrl    : NavController,
-                public alertCtrl  : AlertController,
-                public toastCtrl  : ToastController,
-                public DB         : Database)
-=======
    public hasComics   : boolean = false;
    public comics      : any;
 
@@ -29,7 +16,6 @@ export class HomePage {
                public alertCtrl  : AlertController,
                public toastCtrl  : ToastController,
                public DB         : Database)
->>>>>>> origin/master
    {
 
    }

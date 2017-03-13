@@ -3,38 +3,39 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Camera } from 'ionic-native';
 
-/*
-  Generated class for the Image provider.
 
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
 @Injectable()
 export class Image {
 
-  public cameraImage : String
+   public cameraImage : String;
 
-  constructor(public http: Http) {
-    console.log('Hello Image Provider');
-  }
 
-  takePhotograph()
+   constructor(public http: Http)
+   {
+      console.log('Hello Camera Provider');
+   }
+
+
+
+   takePhotograph()
    {
       return new Promise(resolve =>
       {
          Camera.getPicture(
-	     {
-	        destinationType : Camera.DestinationType.DATA_URL,
-	        targetWidth 	: 320,
-	        targetHeight	: 240
-	     })
-	     .then((data) =>
-	     {
-	        this.cameraImage 	= "data:image/jpeg;base64," + data;
-	        resolve(this.cameraImage);
-	     });
+         {
+            destinationType 	 : Camera.DestinationType.DATA_URL,
+            targetWidth 	     : 320,
+            targetHeight	     : 240
+         })
+         .then((data) =>
+         {
+            // imageData is a base64 encoded string
+            this.cameraImage 	= "data:image/jpeg;base64," + data;
+            resolve(this.cameraImage);
+         });
       });
    }
+
 
 
 
@@ -45,21 +46,22 @@ export class Image {
          let cameraOptions = {
              sourceType         : Camera.PictureSourceType.PHOTOLIBRARY,
              destinationType    : Camera.DestinationType.DATA_URL,
-	         quality            : 100,
-	         targetWidth        : 320,
-	         targetHeight       : 240,
-	         encodingType       : Camera.EncodingType.JPEG,
-	         correctOrientation : true
+             quality            : 100,
+             targetWidth        : 320,
+             targetHeight       : 240,
+             encodingType       : Camera.EncodingType.JPEG,
+             correctOrientation : true
          };
 
          Camera.getPicture(cameraOptions)
          .then((data) =>
          {
             this.cameraImage 	= "data:image/jpeg;base64," + data;
-	    resolve(this.cameraImage);
+            resolve(this.cameraImage);
          });
 
       });
    }
+
 
 }
