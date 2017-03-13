@@ -25,44 +25,43 @@ export class Database {
    }
 
    initialiseDB(){
-        this._DB 			= new PouchDB('comics');
-        this._remoteDB 		= 'http://192.168.10.186:5984/comics';
+        this._DB 			= new PouchDB('clientes');
+        this._remoteDB 		= 'http://192.168.10.186:5984/clientes';
         this._syncOpts 		= { live 	  :true,
                                 retry 	  :true,
                                 continuous:true };
         this._DB.sync(this._remoteDB, this._syncOpts)
         .on('change', (info) =>
         {
-            console.log('Handling syncing change');
+            console.log('Manipulação de alterações de sincronização');
             console.dir(info);
         })
         .on('paused', (info) =>
         {
-            console.log('Handling syncing pause');
+            console.log('Gerenciando a pausa de sincronização');
             console.dir(info);
         })
         .on('active', (info) =>
         {
-            console.log('Handling syncing resumption');
+            console.log('Manipulando a reativação de sincronização');
             console.dir(info);
         })
         .on('denied', (err) =>
         {
-            console.log('Handling syncing denied');
+            console.log('Gerenciando a sincronização negada');
             console.dir(err);
         })
         .on('complete', (info) =>
         {
-            console.log('Handling syncing complete');
+            console.log('Gerenciando a sincronização concluída');
             console.dir(info);
         })
         .on('error', (err)=>
         {
-            console.log('Handling syncing error');
+            console.log('Gerenciando o erro de sincronização');
             console.dir(err);
         });
     }
-
 
    handleSyncing()
    {
