@@ -7,10 +7,15 @@
 
 <ion-content padding>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
    <div>
       <ion-item *ngIf="isEdited && !hideForm">
          <button
             ion-button
+<<<<<<< HEAD
 	    item-right
 	    color="secondary"
 	    text-center
@@ -24,6 +29,22 @@
             <h2>Success!</h2>
 	     <p>Maybe you'd like to edit an existing entry or add a new record?</p>
 	     <p>Simply go back to the home page and select the option you want to pursue.</p>
+=======
+            item-right
+            color="secondary"
+            text-center
+            block
+            (click)="deleteComic()">Remove this Entry?</button>
+      </ion-item>
+
+
+
+      <div *ngIf="hideForm">
+         <ion-item class="post-entry-message" text-wrap>
+            <h2>Success!</h2>
+            <p>Maybe you'd like to edit an existing entry or add a new record?</p>
+            <p>Simply go back to the home page and select the option you want to pursue.</p>
+>>>>>>> origin/master
          </ion-item>
       </div>
 
@@ -39,6 +60,7 @@
                      <ion-label>Please select: </ion-label>
                      <ion-select
                         class="select"
+<<<<<<< HEAD
 			interface="action-sheet"
 			formControlName="title"
 		        block
@@ -48,11 +70,26 @@
 			<ion-option value="2000AD">2000AD</ion-option>
 			<ion-option value="Scream">Scream</ion-option>
 			<ion-option value="Other">Other</ion-option>
+=======
+                        interface="action-sheet"
+                        formControlName="title"
+                        block
+                        [(ngModel)]="comicTitle">
+                        <ion-option value="Battle/Action Force">Battle/Action Force</ion-option>
+                        <ion-option value="Eagle">Eagle</ion-option>
+                        <ion-option value="2000AD">2000AD</ion-option>
+                        <ion-option value="Scream">Scream</ion-option>
+                        <ion-option value="Other">Other</ion-option>
+>>>>>>> origin/master
                      </ion-select>
                   </ion-item>
                </ion-item-group>
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
                <ion-item-group>
                   <ion-item-divider color="light">Character Name</ion-item-divider>
                   <ion-item>
@@ -65,11 +102,16 @@
                </ion-item-group>
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
                <ion-item-group>
                   <ion-item-divider color="light">Character Image</ion-item-divider>
                   <ion-item>
                      <a
                         ion-button
+<<<<<<< HEAD
 			block
 			margin-bottom
 			color="primary"
@@ -92,6 +134,36 @@
                   <ion-item>
                      <img [src]="characterImage">
 		      <input type="hidden" name="image" formControlName="image" [(ngModel)]="comicImage">
+=======
+                        block
+                        margin-bottom
+                        color="primary"
+                        (click)="takePhotograph()">
+                           Take a photograph
+                     </a>
+                  </ion-item>
+
+
+                  <ion-item>
+                     <a
+                        ion-button
+                        block
+                        margin-bottom
+                        color="secondary"
+                        (click)="selectImage()">
+                           Select an existing image
+                     </a>
+                  </ion-item>
+
+
+                  <ion-item>
+                     <img [src]="characterImage">
+                     <input
+                        type="hidden"
+                        name="image"
+                        formControlName="image"
+                        [(ngModel)]="comicImage">
+>>>>>>> origin/master
                   </ion-item>
                </ion-item-group>
 
@@ -103,6 +175,7 @@
                      <ion-label text-left>Rating for this character?</ion-label>
                      <ion-range
                         class="textarea"
+<<<<<<< HEAD
 			formControlName="rating"
 			min="1"
 			max="5"
@@ -112,6 +185,17 @@
 			[(ngModel)]="comicRating">
                         <ion-label range-left>1</ion-label>
 			<ion-label range-right>5</ion-label>
+=======
+                        formControlName="rating"
+                        min="1"
+                        max="5"
+                        step="1"
+                        snaps="true"
+                        secondary
+                        [(ngModel)]="comicRating">
+                        <ion-label range-left>1</ion-label>
+                        <ion-label range-right>5</ion-label>
+>>>>>>> origin/master
                      </ion-range>
                   </ion-item>
                </ion-item-group>
@@ -122,14 +206,21 @@
                   <ion-item>
                      <ion-textarea
                         placeholder="Additional notes..."
+<<<<<<< HEAD
 			formControlName="note"
 			rows="6"
 			[(ngModel)]="comicNote"></ion-textarea>
+=======
+                        formControlName="note"
+                        rows="6"
+                        [(ngModel)]="comicNote"></ion-textarea>
+>>>>>>> origin/master
                   </ion-item>
                </ion-item-group>
 
 
                <ion-item>
+<<<<<<< HEAD
                   <!--button
                      ion-button
 		     color="primary"
@@ -155,3 +246,24 @@
    </div>
 
 </ion-content>
+=======
+                  <button
+                     ion-button
+                     color="primary"
+                     text-center
+                     block
+                     [disabled]="!form.valid">Save Entry</button>
+               </ion-item>
+
+            </ion-list>
+
+
+         </form>
+      </div>
+
+
+   </div>
+
+
+</ion-content>
+>>>>>>> origin/master

@@ -13,17 +13,26 @@ import PouchDB from 'pouchdb';
 @Injectable()
 export class Database {
 
+<<<<<<< HEAD
     public _DB 		    : any;
     private success 	: boolean = true;
     private _remoteDB 	: any;
     private _syncOpts 	: any;
+=======
+   public _DB          : any;
+   private success     : boolean = true;
+   private _remoteDB   : any;
+   private _syncOpts   : any;
+>>>>>>> origin/master
 
-  constructor(public http: Http,
-              public alertCtrl : AlertController)
+
+   constructor(public http      : Http,
+               public alertCtrl : AlertController)
    {
       this.initialiseDB();
    }
 
+<<<<<<< HEAD
    initialiseDB(){
         this._DB 			= new PouchDB('comics');
         this._remoteDB 		= 'http://192.168.10.186:5984/comics';
@@ -66,6 +75,54 @@ export class Database {
 
    handleSyncing()
    {
+=======
+
+
+   initialiseDB()
+   {
+      this._DB 			     = new PouchDB('comics');
+      this._remoteDB 		 = 'http://localhost:5984/comics';
+      this._syncOpts 		 = { live 	         : true,
+                                 retry 	         : true,
+                                 continuous 	 : true };
+      this._DB.sync(this._remoteDB, this._syncOpts)
+      .on('change', (info) =>
+      {
+         console.log('Handling syncing change');
+         console.dir(info);
+      })
+      .on('paused', (info) =>
+      {
+         console.log('Handling syncing pause');
+         console.dir(info);
+      })
+      .on('active', (info) =>
+      {
+         console.log('Handling syncing resumption');
+         console.dir(info);
+      })
+      .on('denied', (err) =>
+      {
+         console.log('Handling syncing denied');
+         console.dir(err);
+      })
+      .on('complete', (info) =>
+      {
+         console.log('Handling syncing complete');
+         console.dir(info);
+      })
+      .on('error', (err)=>
+      {
+         console.log('Handling syncing error');
+         console.dir(err);
+      });
+   }
+
+
+
+   handleSyncing()
+   {
+>>>>>>> origin/master
       this._DB.changes({
          since 		     : 'now',
          live 		     : true,
@@ -184,11 +241,19 @@ export class Database {
             if(doc._attachments)
             {
                attachment 		= doc._attachments["character.jpg"].data;
+<<<<<<< HEAD
+=======
+            }
+            else
+            {
+               console.log("we do NOT have attachments");
+>>>>>>> origin/master
             }
             else
             {
                console.log("we do NOT have attachments");
             }
+
 
 
             item.push(
