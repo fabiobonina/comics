@@ -11,13 +11,13 @@ import PouchDB from 'pouchdb';
   for more info on providers and Angular 2 DI.
 */
 @Injectable()
-export class DataCliente {
+export class DataLocalidade {
 
     public _DB 		    : any;
     private success 	: boolean = true;
     private _remoteDB 	: any;
     private _syncOpts 	: any;
-    private _nomeDB     : string = 'clientes';
+    private _nomeDB     : string = 'localidades';
 
   constructor(public http: Http,
               public alertCtrl : AlertController)

@@ -1,6 +1,6 @@
 <ion-header>
 
-  <ion-navbar color="secondary">
+  <ion-navbar color="primary">
     <ion-title>80's Quadinhos Favotidos</ion-title>
     <button ion-button menuToggle>
       <ion-icon name="menu"> </ion-icon>
@@ -42,7 +42,7 @@
                clear
                item-right
                (click)="viewCharacter({'key':comic.id, 'rev':comic.rev })">
-                  View
+                  <ion-icon name="expand"> View</ion-icon>
             </button>
          </ion-item>
 

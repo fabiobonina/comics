@@ -7,12 +7,36 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>clienteDetalhe</ion-title>
+    <ion-title>Cliente Detalhe</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+    <ion-list>
+      
+        <ion-item>
+            {{ clienteNome }}
+        </ion-item>
+ 
+    </ion-list>
+
+    <!-- Real floating action button, fixed. It will not scroll with the content -->
+  <ion-fab top right edge>
+    <button ion-fab mini><ion-icon name="add"></ion-icon></button>
+    <ion-fab-list>
+      <button ion-fab color="primary" (click)="updateCliente({'key':recordId, 'rev':revisionId })"><ion-icon name="md-create"></ion-icon></button>
+      <button ion-fab color="danger" (click)="deleteCliente()"><ion-icon name="trash"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-fab right bottom>
+    <button ion-fab color="light"><ion-icon name="arrow-dropleft"></ion-icon></button>
+    <ion-fab-list side="left">
+      <button ion-fab color="primary" (click)="updateCliente({'key':recordId, 'rev':revisionId })"><ion-icon name="md-create"></ion-icon></button>
+      <button ion-fab color="danger" (click)="deleteCliente()"><ion-icon name="trash"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
 
 </ion-content>

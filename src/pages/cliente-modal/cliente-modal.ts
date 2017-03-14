@@ -16,7 +16,6 @@ import { Image } from "../../providers/image";
 })
 export class ClienteModalPage {
 
-   
    public characterImage   : any;
    public recordId         : any;
    public revisionId       : any;
@@ -30,50 +29,41 @@ export class ClienteModalPage {
    public hideForm            : boolean = false;
    public pageTitle           : string;
 
-
    constructor(public navCtrl    : NavController,
-               public NP         : NavParams,
+               public navParams  : NavParams,
                public fb         : FormBuilder,
                public IMAGE      : Image,
                public DB         : DataCliente,
-               public toastCtrl  : ToastController)
-   {
+               public toastCtrl  : ToastController){
 
-      this.form = fb.group({
-         "nome"            : ["", Validators.required],
-         "nomeFantasia"    : ["", Validators.required],
-         "seguimento"      : ["", Validators.required],
-         "image"           : ["", Validators.required],
-         "ativo"           : ["", Validators.required]
-      });
+              this.form = fb.group({
+                "nome"            : ["", Validators.required],
+                "nomeFantasia"    : ["", Validators.required],
+                "seguimento"      : ["", Validators.required],
+                "image"           : ["", Validators.required],
+                "ativo"           : ["", Validators.required]
+              });
 
-      this.resetFields();
+              this.resetFields();
 
-
-      if(NP.get("key") && NP.get("rev"))
-      {
-         this.recordId 			= NP.get("key");
-         this.revisionId 		= NP.get("rev");
-         this.isEdited 			= true;
-         this.selectCliente(this.recordId);
-         this.pageTitle 		= 'Alterar';
-      }
-      else
-      {
-         this.recordId 			= '';
-         this.revisionId 		= '';
-         this.isEdited 			= false;
-         this.pageTitle 		= 'Criar';
-      }
+              if(navParams.get("key") && navParams.get("rev")){
+                  this.recordId 			= navParams.get("key");
+                  this.revisionId 		= navParams.get("rev");
+                  this.isEdited 			= true;
+                  this.selectCliente(this.recordId);
+                  this.pageTitle 		= 'Editando Cliente';
+              }
+              else{
+                  this.recordId 			= '';
+                  this.revisionId 		= '';
+                  this.isEdited 			= false;
+                  this.pageTitle 		= 'Novo Cliente';
+              }
    }
 
-
-
-   selectCliente(id)
-   {
+   selectCliente(id){
       this.DB.retrieveCliente(id)
-      .then((doc)=>
-      {
+      .then((doc)=>{
          this.clienteNome         = doc[0].nome;
          this.clienteNomeFantasia	= doc[0].nomeFantasia;
          this.clienteSeguimento 	= doc[0].seguimento;
@@ -85,11 +75,7 @@ export class ClienteModalPage {
       });
    }
 
-
-
-
-   saveCliente()
-   {
+   saveCliente(){
       let nome	        : string		= this.form.controls["nome"].value,
           nomeFantasia 	: string 		= this.form.controls["nomeFantasia"].value,
           seguimento  	: string		= this.form.controls["seguimento"].value,
@@ -98,21 +84,16 @@ export class ClienteModalPage {
           revision	    : string 		= this.revisionId,
   	      id 		        : any 			= this.recordId;
 
-
-      if(this.recordId !== '')
-      {
+      if(this.recordId !== ''){
          this.DB.updateCliente(id, nome, nomeFantasia, seguimento, ativo, image, revision)
-         .then((data) =>
-         {
+         .then((data) =>{
             this.hideForm 			= true;
             this.sendNotification(`${nomeFantasia} Foi atualizado em na lista de clientes`);
          });
       }
-      else
-      {
+      else{
          this.DB.addCliente(nome, nomeFantasia, seguimento, ativo, image)
-         .then((data) =>
-         {
+         .then((data) =>{
             this.hideForm 			= true;
             this.resetFields();
             this.sendNotification(`${nomeFantasia} Foi adicionado a na lista de clientes`);
@@ -120,61 +101,29 @@ export class ClienteModalPage {
       }
    }
 
-
-
-   takePhotograph()
-   {
+   takePhotograph(){
       this.IMAGE.takePhotograph()
-      .then((image)=>
-      {
+      .then((image)=>{
          this.characterImage 	= image.toString();
          this.clienteImage 		= image.toString();
       })
-      .catch((err)=>
-      {
+      .catch((err)=>{
          console.log(err);
       });
    }
 
-
-
-   selectImage()
-   {
+   selectImage(){
       this.IMAGE.selectPhotograph()
-      .then((image)=>
-      {
+      .then((image)=>{
          this.characterImage 	= image.toString();
          this.clienteImage 		= image.toString();
       })
-      .catch((err)=>
-      {
+      .catch((err)=>{
          console.log(err);
       });
    }
 
-   deleteCliente()
-   {
-      let nomeFantasia;
-
-      this.DB.retrieveCliente(this.recordId)
-      .then((doc) =>
-      {
-         nomeFantasia            = doc[0].nomeFantasia;
-         return this.DB.removeCliente(this.recordId, this.revisionId);
-      })
-      .then((data) =>
-      {
-         this.hideForm 	= true;
-         this.sendNotification(`${nomeFantasia} Foi removido com sucesso da lista de clientes`);
-      })
-      .catch((err) =>
-      {
-         console.log(err);
-      });
-   }
-
-   resetFields() : void
-   {
+   resetFields() : void{
       this.clienteNomeFantasia  = "";
       this.clienteSeguimento    = "";
       this.clienteNome	        = "";
@@ -183,8 +132,7 @@ export class ClienteModalPage {
       this.characterImage	      = "";
    }
 
-   sendNotification(message)  : void
-   {
+   sendNotification(message)  : void{
       let notification = this.toastCtrl.create({
          message 	: message,
          duration 	: 3000

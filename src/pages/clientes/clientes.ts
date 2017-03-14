@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { DataCliente } from "../../providers/dataCliente";
 import { ClienteModalPage } from "../cliente-modal/cliente-modal";
+import { ClienteDetalhePage } from "../cliente-detalhe/cliente-detalhe";
 
 /*
   Generated class for the Clientes page.
@@ -15,77 +16,47 @@ import { ClienteModalPage } from "../cliente-modal/cliente-modal";
 })
 export class ClientesPage {
 
-  public hasClientes   : boolean = false;
-   public clientes      : any;
+  public temDados   : boolean = false;
+  public clientes      : any;
 
-   constructor(	public navCtrl   : NavController,
-               public alertCtrl  : AlertController,
-               public toastCtrl  : ToastController,
-               public DB         : DataCliente)
-   {
+  constructor(  public navCtrl   : NavController,
+                public alertCtrl  : AlertController,
+                public toastCtrl  : ToastController,
+                public DB         : DataCliente) {
+  }
 
-   }
+  ionViewWillEnter() {
+    this.displayClientes();
+  }
 
+  displayClientes() {
+    this.DB.retrieveClientes().then((data)=> {
+        let existingData = Object.keys(data).length;
+        if(existingData !== 0) {
+          this.temDados 	= true;
+          this.clientes 	= data;
+        }
+        else {
+          console.log("não obtemos nada!");
+        }
+    });
+  }
 
+  displayAlert(message) : void {
+    let headsUp = this.alertCtrl.create( {
+        title: 'Anteção!',
+        subTitle: message,
+        buttons: ['Consegui!']
+    });
+    headsUp.present();
+  }
 
-   ionViewWillEnter()
-   {
-      this.displayClientes();
-   }
-
-
-
-   displayClientes()
-   {
-      this.DB.retrieveClientes().then((data)=>
-      {
-
-         let existingData = Object.keys(data).length;
-         if(existingData !== 0)
-         {
-            this.hasClientes 	= true;
-            this.clientes 	= data;
-         }
-         else
-         {
-            console.log("we get nada!");
-         }
-
-      });
-   }
-
-
-
-   displayAlert(message) : void
-   {
-      let headsUp = this.alertCtrl.create({
-          title: 'Anteção!',
-          subTitle: message,
-          buttons: ['Consegui!']
-      });
-
-      headsUp.present();
-   }
-
-
-
-   addCharacter()
-   {
-      this.navCtrl.push(ClienteModalPage);
-   }
-   viewCharacter(param)
-   {
-      this.navCtrl.push(ClienteModalPage, param);
-   }
-
-   verDetalhe(param)
-   {
-      this.navCtrl.push(ClienteModalPage, param);
-   }
-   addCliente()
-   {
-      this.navCtrl.push(ClienteModalPage);
-   }
+  viewCliente(param) {
+    this.navCtrl.push(ClienteDetalhePage, param);
+  }
+  addCliente() {
+    this.navCtrl.push(ClienteModalPage);
+  }
 
 
 }

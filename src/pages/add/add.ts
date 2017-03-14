@@ -68,12 +68,12 @@ export class AddPage {
       this.DB.retrieveComic(id)
       .then((doc)=>
       {
-         this.comicCharacter 		= doc[0].character;
+         this.comicCharacter 	= doc[0].character;
          this.comicTitle			= doc[0].title;
-         this.comicRating 			= doc[0].rating;
+         this.comicRating 		= doc[0].rating;
          this.comicNote 			= doc[0].note;
          this.comicImage 			= doc[0].image;
-         this.characterImage 		= doc[0].image;
+         this.characterImage 	= doc[0].image;
          this.recordId 				= doc[0].id;
          this.revisionId 			= doc[0].rev;
       });

@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar color="secondary">
+  <ion-navbar color="primary">
     <ion-title>Clientes</ion-title>
     <button ion-button menuToggle>
       <ion-icon name="menu"> </ion-icon>
@@ -14,7 +14,6 @@
   </ion-navbar>
 
 </ion-header>
-
 
 <ion-content padding>
 
@@ -33,9 +32,7 @@
       </button>
    </ion-item>
 
-
-
-   <div *ngIf="hasClientes">
+   <div *ngIf="temDados">
       <ion-list>
 
          <ion-item *ngFor="let cliente of clientes">
@@ -48,7 +45,7 @@
                clear
                item-right
                (click)="viewCliente({'key':cliente.id, 'rev':cliente.rev })">
-                  Detalhe
+                   <ion-icon name="expand"></ion-icon>
             </button>
          </ion-item>
 
