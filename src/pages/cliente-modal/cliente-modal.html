@@ -1,0 +1,138 @@
+<ion-header>
+   <ion-navbar>
+      <ion-title>{{pageTitle }}</ion-title>
+   </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+   <div>
+      <ion-item *ngIf="isEdited && !hideForm">
+         <button
+            ion-button
+            item-right
+            color="secondary"
+            text-center
+            block
+            (click)="deleteCliente()">Remover esta entrada?</button>
+      </ion-item>
+
+      <div *ngIf="hideForm">
+         <ion-item class="post-entry-message" text-wrap>
+            <H2> Sucesso! </ H2>
+             <P> Talvez você queira editar uma entrada existente ou adicionar um novo registro? </ P>
+             <P> Basta voltar à página inicial e selecionar a opção que você deseja seguir. </ P>
+         </ion-item>
+      </div>
+
+      <div *ngIf="!hideForm">
+         <form [formGroup]="form" (ngSubmit)="saveCliente()">
+
+            <ion-list>
+                  <ion-item-group>
+                        <ion-item-divider color="light">Name</ion-item-divider>
+                        <ion-item>
+                              <ion-input
+                                    type="text"
+                                    placeholder="nome..."
+                                    formControlName="nome"
+                                    [(ngModel)]="clienteNome"></ion-input>
+                        </ion-item>
+                  </ion-item-group>
+                  <ion-item-group>
+                  <ion-item-divider color="light">Name Fantasia</ion-item-divider>
+                  <ion-item>
+                     <ion-input
+                        type="text"
+                        placeholder="name fantasia..."
+                        formControlName="nomeFantasia"
+                        [(ngModel)]="clienteNomeFantasia"></ion-input>
+                  </ion-item>
+               </ion-item-group>
+               <ion-item-group>
+                  <ion-item-divider color="light">Seguimento</ion-item-divider>
+                  <ion-item>
+                     <ion-label>Por favor selecione: </ion-label>
+                     <ion-select
+                        class="select"
+                        interface="action-sheet"
+                        formControlName="seguimento"
+                        block
+                        [(ngModel)]="clienteSeguimento">
+                        <ion-option value="Bebida">Bebida</ion-option>
+                        <ion-option value="Industia">Industia</ion-option>
+                        <ion-option value="Saneamento">Saneamento</ion-option>
+                     </ion-select>
+                  </ion-item>
+               </ion-item-group>
+
+               <ion-item-group>
+                  <ion-item-divider color="light">Character Image</ion-item-divider>
+                  <ion-item>
+                     <a ion-button
+                        block
+                        margin-bottom
+                        color="primary"
+                        (click)="takePhotograph()">Tirar uma foto</a>
+                  </ion-item>
+
+                  <ion-item>
+                     <a ion-button
+                        block
+                        margin-bottom
+                        color="secondary"
+                        (click)="selectImage()">Selecionar uma imagem existente</a>
+                  </ion-item>
+
+                  <ion-item>
+                     <img [src]="characterImage">
+                     <input
+                        type="hidden"
+                        name="image"
+                        formControlName="image"
+                        [(ngModel)]="clienteImage">
+                  </ion-item>
+               </ion-item-group>
+
+               <ion-item-group>
+                  <ion-item-divider color="light">Ativo</ion-item-divider>
+                  <ion-item>
+                     <ion-label text-left>Ativo</ion-label>
+                     <ion-range
+                        class="textarea"
+                        formControlName="ativo"
+                        min="0"
+                        max="1"
+                        step="0"
+                        snaps="true"
+                        secondary
+                        [(ngModel)]="clienteAtivo">
+                        <ion-label range-left>0</ion-label>
+                        <ion-label range-right>1</ion-label>
+                     </ion-range>
+                  </ion-item>
+               </ion-item-group>
+
+               <ion-item>
+                  <!--button
+                     ion-button
+                     color="primary"
+                     text-center
+                     block
+                     [disabled]="!form.valid">Salvar</button-->
+                  <button
+                     ion-button
+                     color="primary"
+                     text-center
+                     block>Salvar</button>
+               </ion-item>
+
+            </ion-list>
+
+         </form>
+      </div>
+
+   </div>
+
+</ion-content>

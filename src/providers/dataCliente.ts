@@ -27,6 +27,7 @@ export class DataCliente {
    initialiseDB(){
         this._DB 			= new PouchDB('clientes');
         this._remoteDB 		= 'http://192.168.10.186:5984/clientes';
+       //this._remoteDB 		= 'http://localhost:5984/clientes';
         this._syncOpts 		= { live 	  :true,
                                 retry 	  :true,
                                 continuous:true };
@@ -74,34 +75,33 @@ export class DataCliente {
       .on('change', (change) =>
       {
          // handle change
-         console.log('Handling change');
+         console.log('Manuseando a mudança');
          console.dir(change);
       })
       .on('complete', (info) =>
       {
          // changes() was canceled
-         console.log('Changes complete');
+         console.log('Alterações concluídas');
          console.dir(info);
       })
       .on('error',  (err) =>
       {
-         console.log('Changes error');
+         console.log('Erro de alterações');
          console.log(err);
       });
    }
 
 
-
-   addComic(title, character, rating, note, image)
+   addCliente(nome, nomeFantasia, ativo, seguimento, image)
    {
       var timeStamp 	= new Date().toISOString(),
           base64String 	= image.substring(23),
-          comic 		= {
-             _id 		: timeStamp,
-             title 		: title,
-             character 	: character,
-             rating     : rating,
-             note 		: note,
+          cliente 		= {
+             _id 		    : timeStamp,
+             nome 		    : nome,
+             nomeFantasia 	: nomeFantasia,
+             seguimento 	: seguimento,
+             ativo          : ativo,
              _attachments: {
                 "character.jpg" : {
                    content_type 	: 'image/jpeg',
@@ -112,7 +112,7 @@ export class DataCliente {
 
       return new Promise(resolve =>
       {
-         this._DB.put(comic).catch((err) =>
+         this._DB.put(cliente).catch((err) =>
          {
             console.log('error is: ' + err);
             this.success = false;
@@ -129,18 +129,16 @@ export class DataCliente {
    }
 
 
-
-
-   updateComic(id, title, character, rating, note, image, revision)
+   updateCliente(id, nome, nomeFantasia, ativo, seguimento, image, revision)
    {
       var base64String	= image.substring(23),
-          comic 		= {
-             _id 		: id,
-             _rev 		: revision,
-             title 		: title,
-             character 	: character,
-             rating 	: rating,
-             note 		: note,
+          cliente 		= {
+             _id            : id,
+             _rev 		    : revision,
+             nome 		    : nome,
+             nomeFantasia 	: nomeFantasia,
+             seguimento		: seguimento,
+             ativo 	        : ativo,
              _attachments: {
                 "character.jpg" : {
                    content_type : 'image/jpeg',
@@ -151,7 +149,7 @@ export class DataCliente {
 
       return new Promise(resolve =>
       {
-         this._DB.put(comic)
+         this._DB.put(cliente)
          .catch((err) =>
          {
             console.log('error is: ' + err);
@@ -167,9 +165,7 @@ export class DataCliente {
    }
 
 
-
-
-   retrieveComic(id)
+   retrieveCliente(id)
    {
       return new Promise(resolve =>
       {
@@ -186,19 +182,18 @@ export class DataCliente {
             }
             else
             {
-               console.log("we do NOT have attachments");
+               console.log("Nós não temos anexos");
             }
-
 
             item.push(
             {
-               id 		     : id,
-               rev		     : doc._rev,
-               character	 : doc.character,
-               title		 : doc.title,
-               note		     : doc.note,
-               rating		 : doc.rating,
-               image		 : dataURIPrefix + attachment
+                id 		     : id,
+                rev		     : doc._rev,
+                nome		 : doc.nome,
+                nomeFantasia : doc.nomeFantasia,
+                seguimento   : doc.seguimento,
+                ativo		 : doc.ativo,
+                image		 : dataURIPrefix + attachment
             });
 
             resolve(item);
@@ -207,9 +202,7 @@ export class DataCliente {
    }
 
 
-
-
-   retrieveComics()
+   retrieveClientes()
    {
       return new Promise(resolve =>
       {
@@ -231,19 +224,18 @@ export class DataCliente {
                }
                else
                {
-                  console.log("we do NOT have attachments");
+                  console.log("Nós não temos anexos");
                }
-
 
                items.push(
                {
-                  id 		: item._id,
-                  rev		: item._rev,
-                  character	: item.character,
-                  title	    : item.title,
-                  note		: item.note,
-                  rating	: item.rating,
-                  image     : dataURIPrefix + attachment
+                  id 		    : item._id,
+                  rev		    : item._rev,
+                  nome	        : item.nome,
+                  nomeFantasia	: item.nomeFantasia,
+                  seguimento	: item.seguimento,
+                  ativo	        : item.ativo,
+                  image         : dataURIPrefix + attachment
                });
             }
 
@@ -253,14 +245,13 @@ export class DataCliente {
    }
 
 
-
-   removeComic(id, rev)
+   removeCliente(id, rev)
    {
       return new Promise(resolve =>
       {
-         var comic   = { _id: id, _rev: rev };
+         var cliente   = { _id: id, _rev: rev };
 
-         this._DB.remove(comic)
+         this._DB.remove(cliente)
          .catch((err) =>
          {
             console.log('error is: ' + err);
@@ -273,7 +264,6 @@ export class DataCliente {
          }
       });
    }
-
 
 
    errorHandler(err)
