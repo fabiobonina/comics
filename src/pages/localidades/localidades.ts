@@ -27,11 +27,11 @@ export class LocalidadesPage {
   }
 
   ionViewWillEnter() {
-      this.displayClientes();
+      this.displayLocalidades();
   }
 
-  displayClientes() {
-    this.DB.retrieveClientes().then((data)=> {
+  displayLocalidades() {
+    this.DB.recuperarDados().then((data)=> {
         let existingData = Object.keys(data).length;
         if(existingData !== 0) {
           this.temDados 	= true;

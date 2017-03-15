@@ -22,10 +22,10 @@ export class DataLocalidade {
   constructor(public http: Http,
               public alertCtrl : AlertController)
    {
-      this.initialiseDB();
+      this.inicializarDB();
    }
 
-   initialiseDB(){
+   inicializarDB(){
         this._DB 			= new PouchDB(this._nomeDB);
         this._remoteDB 		= 'http://192.168.10.186:5984/' + this._nomeDB;
        //this._remoteDB 		= 'http://localhost:5984/' + this._nomeDB;
@@ -65,7 +65,7 @@ export class DataLocalidade {
         });
     }
 
-   handleSyncing()
+   processarSync()
    {
       this._DB.changes({
          since 		     : 'now',
@@ -93,7 +93,7 @@ export class DataLocalidade {
    }
 
 
-   addCliente(nome, nomeFantasia, ativo, seguimento, image)
+   addDados(nome, nomeFantasia, ativo, seguimento, image)
    {
       var timeStamp 	= new Date().toISOString(),
           base64String 	= image.substring(23),
@@ -122,7 +122,7 @@ export class DataLocalidade {
 
          if(this.success)
          {
-            this.handleSyncing();
+            this.processarSync();
             resolve(true);
          }
 
@@ -130,7 +130,7 @@ export class DataLocalidade {
    }
 
 
-   updateCliente(id, nome, nomeFantasia, ativo, seguimento, image, revision)
+   updateDados(id, nome, nomeFantasia, ativo, seguimento, image, revision)
    {
       var base64String	= image.substring(23),
           cliente 		= {
@@ -159,14 +159,14 @@ export class DataLocalidade {
 
          if(this.success)
          {
-            this.handleSyncing();
+            this.processarSync();
             resolve(true);
          }
       });
    }
 
 
-   retrieveCliente(id)
+   recuperarDado(id)
    {
       return new Promise(resolve =>
       {
@@ -203,7 +203,7 @@ export class DataLocalidade {
    }
 
 
-   retrieveClientes()
+   recuperarDados()
    {
       return new Promise(resolve =>
       {
@@ -246,7 +246,7 @@ export class DataLocalidade {
    }
 
 
-   removeCliente(id, rev)
+   removeDados(id, rev)
    {
       return new Promise(resolve =>
       {
@@ -267,12 +267,12 @@ export class DataLocalidade {
    }
 
 
-   errorHandler(err)
+   errorManipulandor(err)
    {
       let headsUp = this.alertCtrl.create({
-          title: 'Heads Up!',
+          title: 'Atenção!',
           subTitle: err,
-          buttons: ['Got It!']
+          buttons: ['Consegui!']
       });
 
       headsUp.present();

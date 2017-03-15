@@ -42,7 +42,7 @@ export class LocalidadeModalPage {
               }
 
   selectLocalidade(id){
-      this.DB.retrieveCliente(id)
+      this.DB.recuperarDado(id)
       .then((doc)=>{
         this.localCliente   = doc[0].cliente;
         this.localNome      = doc[0].nome;
@@ -60,10 +60,10 @@ export class LocalidadeModalPage {
    deleteCliente(){
       let nome;
 
-      this.DB.retrieveCliente(this.recordId)
+      this.DB.recuperarDado(this.recordId)
       .then((doc) =>{
          nome               = doc[0].nome;
-         return this.DB.removeCliente(this.recordId, this.revisionId);
+         return this.DB.removeDados(this.recordId, this.revisionId);
       })
       .then((data) =>{
          this.hideForm 	= true;

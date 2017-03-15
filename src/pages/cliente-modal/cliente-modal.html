@@ -31,18 +31,20 @@
 
             <ion-list>
                   <ion-item-group>
-                        <ion-item-divider color="light">Name</ion-item-divider>
+                        
+                        
                         <ion-item>
+                              <ion-label floating>Name</ion-label>
                               <ion-input
                                     type="text"
-                                    placeholder="nome..."
                                     formControlName="nome"
                                     [(ngModel)]="clienteNome"></ion-input>
                         </ion-item>
                   </ion-item-group>
                   <ion-item-group>
-                  <ion-item-divider color="light">Name Fantasia</ion-item-divider>
+                  
                   <ion-item>
+                        <ion-label floating>Name</ion-label>
                      <ion-input
                         type="text"
                         placeholder="name fantasia..."
@@ -51,9 +53,10 @@
                   </ion-item>
                </ion-item-group>
                <ion-item-group>
-                  <ion-item-divider color="light">Seguimento</ion-item-divider>
+                  
                   <ion-item>
-                     <ion-label>Por favor selecione: </ion-label>
+                        <ion-label floating>Seguimento</ion-label>
+                     
                      <ion-select
                         class="select"
                         interface="action-sheet"
@@ -127,6 +130,21 @@
                      text-center
                      block>Salvar</button>
                </ion-item>
+
+               <ion-item>
+            <ion-label floating>First Name</ion-label>
+            <ion-input  type="text"></ion-input>
+        </ion-item>
+ 
+        <ion-item>
+            <ion-label floating>Last Name</ion-label>
+            <ion-input  type="text"></ion-input>
+        </ion-item>
+ 
+        <ion-item>
+            <ion-label floating>Age</ion-label>
+            <ion-input  type="number"></ion-input>
+        </ion-item>
 
             </ion-list>
 
