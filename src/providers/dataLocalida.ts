@@ -20,8 +20,7 @@ export class DataLocalidade {
     private _nomeDB     : string = 'localidades';
 
   constructor(public http: Http,
-              public alertCtrl : AlertController)
-   {
+              public alertCtrl : AlertController) {
       this.inicializarDB();
    }
 
@@ -65,8 +64,7 @@ export class DataLocalidade {
         });
     }
 
-   processarSync()
-   {
+   processarSync() {
       this._DB.changes({
          since 		     : 'now',
          live 		     : true,
@@ -92,36 +90,24 @@ export class DataLocalidade {
       });
    }
 
-
-   addDados(nome, nomeFantasia, ativo, seguimento, image)
-   {
+   addDados(nome, cliente, tipo, municipio, uf, ativo) {
       var timeStamp 	= new Date().toISOString(),
-          base64String 	= image.substring(23),
-          cliente 		= {
-             _id 		    : timeStamp,
-             nome 		    : nome,
-             nomeFantasia 	: nomeFantasia,
-             seguimento 	: seguimento,
-             ativo          : ativo,
-             _attachments: {
-                "character.jpg" : {
-                   content_type 	: 'image/jpeg',
-                   data 			: base64String
-                }
-             }
+          localidade 	= {
+             _id 		: timeStamp,
+             nome 		: nome,
+             cliente 	: cliente,
+             tipo 	    : tipo,
+             municipio 	: municipio,
+             uf 	    : uf,
+             ativo      : ativo
           };
 
-      return new Promise(resolve =>
-      {
-         this._DB.put(cliente).catch((err) =>
-         {
+      return new Promise(resolve => {
+         this._DB.put(nome).catch((err) => {
             console.log('error is: ' + err);
             this.success = false;
          });
-
-
-         if(this.success)
-         {
+         if(this.success) {
             this.processarSync();
             resolve(true);
          }
@@ -129,72 +115,44 @@ export class DataLocalidade {
       });
    }
 
-
-   updateDados(id, nome, nomeFantasia, ativo, seguimento, image, revision)
-   {
-      var base64String	= image.substring(23),
-          cliente 		= {
-             _id            : id,
-             _rev 		    : revision,
-             nome 		    : nome,
-             nomeFantasia 	: nomeFantasia,
-             seguimento		: seguimento,
-             ativo 	        : ativo,
-             _attachments: {
-                "character.jpg" : {
-                   content_type : 'image/jpeg',
-                   data 		: base64String
-                }
-             }
+   updateDados(id, nome, cliente, tipo, municipio, uf, ativo, revision) {
+      var lolicadade 	= {
+             _id        : id,
+             _rev 		: revision,
+             nome 		: nome,
+             cliente 	: cliente,
+             tipo 	    : tipo,
+             municipio 	: municipio,
+             uf 	    : uf,
+             ativo      : ativo
           };
 
-      return new Promise(resolve =>
-      {
-         this._DB.put(cliente)
-         .catch((err) =>
-         {
+      return new Promise(resolve => {
+         this._DB.put(nome)
+         .catch((err) => {
             console.log('error is: ' + err);
             this.success = false;
          });
 
-         if(this.success)
-         {
+         if(this.success) {
             this.processarSync();
             resolve(true);
          }
       });
    }
 
-
-   recuperarDado(id)
-   {
-      return new Promise(resolve =>
-      {
-         this._DB.get(id, {attachments: true})
-         .then((doc)=>
-         {
-            var item 			= [],
-                dataURIPrefix	= 'data:image/jpeg;base64,',
-                attachment;
-
-            if(doc._attachments)
-            {
-               attachment 		= doc._attachments["character.jpg"].data;
-            }
-            else
-            {
-               console.log("Nós não temos anexos");
-            }
-
-            item.push(
-            {
+   recuperarDados(id) {
+      return new Promise(resolve => {
+         this._DB.get(id) 
+         .then((doc)=> {
+            var item 			= [];
+            item.push( {
                 id 		     : id,
                 rev		     : doc._rev,
                 nome		 : doc.nome,
                 nomeFantasia : doc.nomeFantasia,
                 seguimento   : doc.seguimento,
                 ativo		 : doc.ativo,
-                image		 : dataURIPrefix + attachment
             });
 
             resolve(item);
@@ -202,41 +160,23 @@ export class DataLocalidade {
       });
    }
 
-
-   recuperarDados()
-   {
-      return new Promise(resolve =>
-      {
-         this._DB.allDocs({include_docs: true, descending: true, attachments: true}, function(err, doc)
-         {
+   recuperarTodos() {
+      return new Promise(resolve => {
+         this._DB.allDocs({include_docs: true, descending: true}, function(err, doc) {
             let k,
                 items 	= [],
                 row 	= doc.rows;
 
-            for(k in row)
-            {
-               var item 		     = row[k].doc,
-                   dataURIPrefix	 = 'data:image/jpeg;base64,',
-                   attachment;
+            for(k in row) {
+               var item 		     = row[k].doc;
 
-               if(item._attachments)
-               {
-                  attachment 		= item._attachments["character.jpg"].data;
-               }
-               else
-               {
-                  console.log("Nós não temos anexos");
-               }
-
-               items.push(
-               {
+               items.push( {
                   id 		    : item._id,
                   rev		    : item._rev,
                   nome	        : item.nome,
                   nomeFantasia	: item.nomeFantasia,
                   seguimento	: item.seguimento,
-                  ativo	        : item.ativo,
-                  image         : dataURIPrefix + attachment
+                  ativo	        : item.ativo
                });
             }
 
@@ -245,30 +185,23 @@ export class DataLocalidade {
       });
    }
 
-
-   removeDados(id, rev)
-   {
-      return new Promise(resolve =>
-      {
+   removeDados(id, rev) {
+      return new Promise(resolve => {
          var cliente   = { _id: id, _rev: rev };
 
          this._DB.remove(cliente)
-         .catch((err) =>
-         {
+         .catch((err) => {
             console.log('error is: ' + err);
             this.success = false;
          });
 
-         if(this.success)
-         {
+         if(this.success) {
             resolve(true);
          }
       });
    }
 
-
-   errorManipulandor(err)
-   {
+   errorManipulandor(err) {
       let headsUp = this.alertCtrl.create({
           title: 'Atenção!',
           subTitle: err,
@@ -277,6 +210,5 @@ export class DataLocalidade {
 
       headsUp.present();
    }
-
 
 }

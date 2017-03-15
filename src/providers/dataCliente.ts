@@ -20,12 +20,11 @@ export class DataCliente {
     private _nomeDB     : string = 'clientes';
 
   constructor(public http: Http,
-              public alertCtrl : AlertController)
-   {
-      this.initialiseDB();
+              public alertCtrl : AlertController) {
+      this.inicializarDB();
    }
 
-   initialiseDB(){
+   inicializarDB(){
         this._DB 			= new PouchDB(this._nomeDB);
         this._remoteDB 		= 'http://192.168.10.186:5984/' + this._nomeDB;
        //this._remoteDB 		= 'http://localhost:5984/' + this._nomeDB;
@@ -65,8 +64,7 @@ export class DataCliente {
         });
     }
 
-   handleSyncing()
-   {
+   processarSync() {
       this._DB.changes({
          since 		     : 'now',
          live 		     : true,
@@ -92,109 +90,65 @@ export class DataCliente {
       });
    }
 
-
-   addCliente(nome, nomeFantasia, ativo, seguimento, image)
-   {
+   addDados(nome, nomeFantasia, seguimento, ativo) {
       var timeStamp 	= new Date().toISOString(),
-          base64String 	= image.substring(23),
           cliente 		= {
              _id 		    : timeStamp,
              nome 		    : nome,
              nomeFantasia 	: nomeFantasia,
              seguimento 	: seguimento,
-             ativo          : ativo,
-             _attachments: {
-                "character.jpg" : {
-                   content_type 	: 'image/jpeg',
-                   data 			: base64String
-                }
-             }
+             ativo          : ativo
           };
 
-      return new Promise(resolve =>
-      {
-         this._DB.put(cliente).catch((err) =>
-         {
+      return new Promise(resolve => {
+         this._DB.put(cliente).catch((err) => {
             console.log('error is: ' + err);
             this.success = false;
          });
-
-
-         if(this.success)
-         {
-            this.handleSyncing();
+         if(this.success) {
+            this.processarSync();
             resolve(true);
          }
-
       });
    }
 
-
-   updateCliente(id, nome, nomeFantasia, ativo, seguimento, image, revision)
-   {
-      var base64String	= image.substring(23),
-          cliente 		= {
+   updateDados(id, nome, nomeFantasia, ativo, seguimento, revision) {
+      var cliente 		= {
              _id            : id,
              _rev 		    : revision,
              nome 		    : nome,
              nomeFantasia 	: nomeFantasia,
              seguimento		: seguimento,
-             ativo 	        : ativo,
-             _attachments: {
-                "character.jpg" : {
-                   content_type : 'image/jpeg',
-                   data 		: base64String
-                }
-             }
+             ativo 	        : ativo
           };
 
-      return new Promise(resolve =>
-      {
+      return new Promise(resolve => {
          this._DB.put(cliente)
-         .catch((err) =>
-         {
+         .catch((err) => {
             console.log('error is: ' + err);
             this.success = false;
          });
 
-         if(this.success)
-         {
-            this.handleSyncing();
+         if(this.success) {
+            this.processarSync();
             resolve(true);
          }
       });
    }
 
+   recuperarDados(id) {
+      return new Promise(resolve => {
+         this._DB.get(id) 
+         .then((doc)=> {
+            var item 			= [];
 
-   retrieveCliente(id)
-   {
-      return new Promise(resolve =>
-      {
-         this._DB.get(id, {attachments: true})
-         .then((doc)=>
-         {
-            var item 			= [],
-                dataURIPrefix	= 'data:image/jpeg;base64,',
-                attachment;
-
-            if(doc._attachments)
-            {
-               attachment 		= doc._attachments["character.jpg"].data;
-            }
-            else
-            {
-               console.log("Nós não temos anexos");
-            }
-
-            item.push(
-            {
+            item.push( {
                 id 		     : id,
                 rev		     : doc._rev,
                 nome		 : doc.nome,
                 nomeFantasia : doc.nomeFantasia,
                 seguimento   : doc.seguimento,
-                ativo		 : doc.ativo,
-                image		 : dataURIPrefix + attachment
+                ativo		 : doc.ativo
             });
 
             resolve(item);
@@ -202,41 +156,23 @@ export class DataCliente {
       });
    }
 
-
-   retrieveClientes()
-   {
-      return new Promise(resolve =>
-      {
-         this._DB.allDocs({include_docs: true, descending: true, attachments: true}, function(err, doc)
-         {
+   recuperarTodos() {
+      return new Promise(resolve => {
+         this._DB.allDocs({include_docs: true, descending: true}, function(err, doc) {
             let k,
                 items 	= [],
                 row 	= doc.rows;
 
-            for(k in row)
-            {
-               var item 		     = row[k].doc,
-                   dataURIPrefix	 = 'data:image/jpeg;base64,',
-                   attachment;
+            for(k in row) {
+               var item 		     = row[k].doc;
 
-               if(item._attachments)
-               {
-                  attachment 		= item._attachments["character.jpg"].data;
-               }
-               else
-               {
-                  console.log("Nós não temos anexos");
-               }
-
-               items.push(
-               {
+               items.push( {
                   id 		    : item._id,
                   rev		    : item._rev,
                   nome	        : item.nome,
                   nomeFantasia	: item.nomeFantasia,
                   seguimento	: item.seguimento,
-                  ativo	        : item.ativo,
-                  image         : dataURIPrefix + attachment
+                  ativo	        : item.ativo
                });
             }
 
@@ -245,34 +181,27 @@ export class DataCliente {
       });
    }
 
-
-   removeCliente(id, rev)
-   {
-      return new Promise(resolve =>
-      {
+   removeDados(id, rev) {
+      return new Promise(resolve => {
          var cliente   = { _id: id, _rev: rev };
 
          this._DB.remove(cliente)
-         .catch((err) =>
-         {
+         .catch((err) => {
             console.log('error is: ' + err);
             this.success = false;
          });
 
-         if(this.success)
-         {
+         if(this.success) {
             resolve(true);
          }
       });
    }
 
-
-   errorHandler(err)
-   {
+   errorManipulandor(err) {
       let headsUp = this.alertCtrl.create({
-          title: 'Heads Up!',
+          title: 'Atenção!',
           subTitle: err,
-          buttons: ['Got It!']
+          buttons: ['Consegui!']
       });
 
       headsUp.present();

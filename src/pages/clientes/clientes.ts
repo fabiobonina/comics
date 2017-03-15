@@ -17,7 +17,7 @@ import { ClienteDetalhePage } from "../cliente-detalhe/cliente-detalhe";
 export class ClientesPage {
 
   public temDados   : boolean = false;
-  public clientes      : any;
+  public clientes   : any;
 
   constructor(  public navCtrl   : NavController,
                 public alertCtrl  : AlertController,
@@ -30,7 +30,7 @@ export class ClientesPage {
   }
 
   displayClientes() {
-    this.DB.retrieveClientes().then((data)=> {
+    this.DB.recuperarTodos().then((data)=> {
         let existingData = Object.keys(data).length;
         if(existingData !== 0) {
           this.temDados 	= true;

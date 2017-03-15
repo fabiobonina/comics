@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { DataLocalidade } from "../../providers/dataLocalida";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 
 /*
   Generated class for the LocalidadeModal page.
@@ -14,6 +15,7 @@ import { DataLocalidade } from "../../providers/dataLocalida";
 })
 export class LocalidadeModalPage {
 
+  public form            : FormGroup;
   public recordId        : any;
   public revisionId      : any;
   public localCliente    : any;
@@ -30,19 +32,37 @@ export class LocalidadeModalPage {
 
   constructor(public navCtrl    : NavController,
               public navParams  : NavParams,
+              public fb         : FormBuilder,
               public DB         : DataLocalidade,
               public toastCtrl  : ToastController) {
-                if(navParams.get("key") && navParams.get("rev")){
+
+                this.form = fb.group({
+                "nome"      : ["", Validators.required],
+                "cliente"   : ["", Validators.required],
+                "tipo"      : ["", Validators.required],
+                "municipio" : ["", Validators.required],
+                "uf"        : ["", Validators.required]
+              });
+
+              this.limparDados();
+
+              if(navParams.get("key") && navParams.get("rev")){
                   this.recordId 			= navParams.get("key");
                   this.revisionId 		= navParams.get("rev");
                   this.isEdited 			= true;
-                  this.selectLocalidade(this.recordId);
-                  this.pageTitle 		= 'Edição';
-                }
+                  this.select(this.recordId);
+                  this.pageTitle 		= 'Editando Cliente';
               }
+              else{
+                  this.recordId 			= '';
+                  this.revisionId 		= '';
+                  this.isEdited 			= false;
+                  this.pageTitle 		= 'Novo Cliente';
+              }
+            }
 
-  selectLocalidade(id){
-      this.DB.recuperarDado(id)
+  select(id){
+      this.DB.recuperarDados(id)
       .then((doc)=>{
         this.localCliente   = doc[0].cliente;
         this.localNome      = doc[0].nome;
@@ -57,27 +77,45 @@ export class LocalidadeModalPage {
       });
    }
 
-   deleteCliente(){
-      let nome;
+   save(){
+      let nome	        : string		= this.form.controls["nome"].value,
+          cliente 	    : string 		= this.form.controls["cliente"].value,
+          tipo  	      : string		= this.form.controls["tipo"].value,
+          municipio	  	: string		= this.form.controls["municipio"].value,
+          uf	         	: string		= this.form.controls["municipio"].value,
+          ativo	  	    : number		= 0,
+          revision	    : string 		= this.revisionId,
+  	      id 		        : any 			= this.recordId;
 
-      this.DB.recuperarDado(this.recordId)
-      .then((doc) =>{
-         nome               = doc[0].nome;
-         return this.DB.removeDados(this.recordId, this.revisionId);
-      })
-      .then((data) =>{
-         this.hideForm 	= true;
-         this.sendNotification(`${nome} Foi removido com sucesso da lista de localidades`);
-      })
-      .catch((err) =>{
-         console.log(err);
-      });
-   }
-   updateCliente(param){
-      this.navCtrl.push(LocalidadeModalPage, param);
+      if(this.recordId !== ''){
+         this.DB.updateDados(id, nome, cliente, tipo, ativo, municipio, uf, revision)
+         .then((data) =>{
+            this.hideForm 			= true;
+            this.sendNotification(`${nome} Foi atualizado em na lista de clientes`);
+         });
+      }
+      else{
+         this.DB.addDados(nome, cliente, tipo, ativo, municipio, uf)
+         .then((data) =>{
+            this.hideForm 			= true;
+            this.limparDados();
+            this.sendNotification(`${nome} Foi adicionado a na lista de clientes`);
+         });
+      }
    }
 
-   sendNotification(message)  : void {
+   limparDados() : void{
+      this.localNome       = "";
+      this.localCliente    = "";
+      this.localMunicipio	 = "";
+      this.localUF 	  	   = "";
+      this.localTipo 	  	 = "";
+      this.localLatitude   = "";
+      this.localLongitude	 = "";
+      this.localAtivo 	   = "";
+   }
+
+   sendNotification(message)  : void{
       let notification = this.toastCtrl.create({
          message 	: message,
          duration 	: 3000

@@ -5,7 +5,6 @@ import { MyApp } from './app.component';
 
 import { HomePage } from '../pages/home/home';
 import { AddPage } from '../pages/add/add';
-import { AddClientePage } from "../pages/addCliente/addCliente";
 import { ClientesPage } from '../pages/clientes/clientes';
 import { ClienteDetalhePage } from '../pages/cliente-detalhe/cliente-detalhe';
 import { ClienteModalPage } from '../pages/cliente-modal/cliente-modal';

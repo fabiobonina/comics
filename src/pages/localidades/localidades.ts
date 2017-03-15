@@ -31,7 +31,7 @@ export class LocalidadesPage {
   }
 
   displayLocalidades() {
-    this.DB.recuperarDados().then((data)=> {
+    this.DB.recuperarTodos().then((data)=> {
         let existingData = Object.keys(data).length;
         if(existingData !== 0) {
           this.temDados 	= true;
