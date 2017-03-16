@@ -50,27 +50,6 @@ export class ClienteDetalhePage {
       });
    }
 
-   delete() {
-      let nomeFantasia;
-
-      this.DB.recuperarDados(this.recordId)
-      .then((doc) => {
-         nomeFantasia            = doc[0].nomeFantasia;
-         return this.DB.removeDados(this.recordId, this.revisionId);
-      })
-      .then((data) => {
-         this.hideForm 	= true;
-         this.sendNotification(`${nomeFantasia} Foi removido com sucesso da lista de clientes`);
-      })
-      .catch((err) => {
-         console.log(err);
-      });
-   }
-
-   updateCliente(param){
-      this.navCtrl.push(ClienteModalPage, param);
-   }
-
    sendNotification(message)  : void {
       let notification = this.toastCtrl.create( {
          message 	: message,

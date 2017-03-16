@@ -18,11 +18,28 @@ export class ClientesPage {
 
   public temDados   : boolean = false;
   public clientes   : any;
+  public recordId             : any;
+  public revisionId           : any;
+  public clienteNome          : any;
+  public clienteNomeFantasia  : any;
+  public clienteSeguimento    : any;
+  public clienteAtivo         : any;
+  public isEdited             : boolean = false;
+  public hideForm             : boolean = false;
+  public pageTitle            : string;
 
   constructor(  public navCtrl   : NavController,
+                public navParams  : NavParams,
                 public alertCtrl  : AlertController,
                 public toastCtrl  : ToastController,
                 public DB         : DataCliente) {
+                if(navParams.get("key") && navParams.get("rev")) {
+                  this.recordId 			= navParams.get("key");
+                  this.revisionId 		= navParams.get("rev");
+                  this.isEdited 			= true;
+                  this.select(this.recordId);
+                  this.pageTitle 		= 'Editando Cliente';
+                }
   }
 
   ionViewWillEnter() {
@@ -51,12 +68,55 @@ export class ClientesPage {
     headsUp.present();
   }
 
+    select(id) {
+      this.DB.recuperarDados(id)
+      .then((doc)=> {
+         this.clienteNome         = doc[0].nome;
+         this.clienteNomeFantasia	= doc[0].nomeFantasia;
+         this.clienteSeguimento 	= doc[0].seguimento;
+         this.clienteAtivo 		  	= doc[0].ativo;
+         this.recordId 				    = doc[0].id;
+         this.revisionId 			    = doc[0].rev;
+      });
+   }
+
   viewCliente(param) {
     this.navCtrl.push(ClienteDetalhePage, param);
   }
   addCliente() {
     this.navCtrl.push(ClienteModalPage);
   }
+
+  delete(id) {
+      let nomeFantasia;
+      let revId;
+      this.DB.recuperarDados(id)
+      .then((doc) => {
+         nomeFantasia         = doc[0].nomeFantasia;
+         revId 			    = doc[0].rev;
+         return this.DB.removeDados(id, revId);
+      })
+      .then((data) => {
+         this.hideForm 	= true;
+         this.sendNotification(`${nomeFantasia} Foi removido com sucesso da lista de clientes`);
+         this.displayClientes();
+      })
+      .catch((err) => {
+         console.log(err);
+      });
+   }
+
+   update(param){
+      this.navCtrl.push(ClienteModalPage, param);
+   }
+
+    sendNotification(message)  : void {
+      let notification = this.toastCtrl.create( {
+         message 	: message,
+         duration 	: 3000
+      });
+      notification.present();
+   }
 
 
 }
