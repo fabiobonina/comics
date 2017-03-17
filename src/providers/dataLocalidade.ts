@@ -90,11 +90,12 @@ export class DataLocalidade {
       });
    }
 
-   addDados(nome, cliente, tipo, municipio, uf, ativo) {
+   addDados(nome, clienteId, cliente, tipo, municipio, uf, ativo) {
       var timeStamp 	= new Date().toISOString(),
           localidade 	= {
              _id 		: timeStamp,
              nome 		: nome,
+             clienteId 	: clienteId,
              cliente 	: cliente,
              tipo 	    : tipo,
              municipio 	: municipio,
@@ -103,7 +104,7 @@ export class DataLocalidade {
           };
 
       return new Promise(resolve => {
-         this._DB.put(nome).catch((err) => {
+         this._DB.put(localidade).catch((err) => {
             console.log('error is: ' + err);
             this.success = false;
          });
@@ -115,11 +116,12 @@ export class DataLocalidade {
       });
    }
 
-   updateDados(id, nome, cliente, tipo, municipio, uf, ativo, revision) {
-      var lolicadade 	= {
+   updateDados(id, nome, clienteId, cliente, tipo, municipio, uf, ativo, revision) {
+      var localidade 	= {
              _id        : id,
              _rev 		: revision,
              nome 		: nome,
+             clienteId 	: clienteId,
              cliente 	: cliente,
              tipo 	    : tipo,
              municipio 	: municipio,
@@ -128,7 +130,7 @@ export class DataLocalidade {
           };
 
       return new Promise(resolve => {
-         this._DB.put(nome)
+         this._DB.put(localidade)
          .catch((err) => {
             console.log('error is: ' + err);
             this.success = false;
@@ -147,12 +149,15 @@ export class DataLocalidade {
          .then((doc)=> {
             var item 			= [];
             item.push( {
-                id 		     : id,
-                rev		     : doc._rev,
-                nome		 : doc.nome,
-                nomeFantasia : doc.nomeFantasia,
-                seguimento   : doc.seguimento,
-                ativo		 : doc.ativo,
+                id 		    : id,
+                rev		    : doc._rev,
+                nome		: doc.nome,
+                clienteId   : doc.clienteId,
+                cliente     : doc.cliente,
+                tipo        : doc.tipo,
+                municipio   : doc.municipio,
+                uf          : doc.uf,
+                ativo		: doc.ativo
             });
 
             resolve(item);
@@ -171,12 +176,15 @@ export class DataLocalidade {
                var item 		     = row[k].doc;
 
                items.push( {
-                  id 		    : item._id,
-                  rev		    : item._rev,
-                  nome	        : item.nome,
-                  nomeFantasia	: item.nomeFantasia,
-                  seguimento	: item.seguimento,
-                  ativo	        : item.ativo
+                    id 		    : item._id,
+                    rev		    : item._rev,
+                    nome		: item.nome,
+                    clienteId   : item.clienteId,
+                    cliente     : item.cliente,
+                    tipo        : item.tipo,
+                    municipio   : item.municipio,
+                    uf          : item.uf,
+                    ativo		: item.ativo
                });
             }
 
@@ -187,9 +195,9 @@ export class DataLocalidade {
 
    removeDados(id, rev) {
       return new Promise(resolve => {
-         var cliente   = { _id: id, _rev: rev };
+         var localidade   = { _id: id, _rev: rev };
 
-         this._DB.remove(cliente)
+         this._DB.remove(localidade)
          .catch((err) => {
             console.log('error is: ' + err);
             this.success = false;

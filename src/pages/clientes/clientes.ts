@@ -43,10 +43,10 @@ export class ClientesPage {
   }
 
   ionViewWillEnter() {
-    this.displayClientes();
+    this.getTodos();
   }
 
-  displayClientes() {
+  getTodos() {
     this.DB.recuperarTodos().then((data)=> {
         let existingData = Object.keys(data).length;
         if(existingData !== 0) {
@@ -80,10 +80,10 @@ export class ClientesPage {
       });
    }
 
-  viewCliente(param) {
+  viewDados(param) {
     this.navCtrl.push(ClienteDetalhePage, param);
   }
-  addCliente() {
+  insert() {
     this.navCtrl.push(ClienteModalPage);
   }
 
@@ -99,7 +99,7 @@ export class ClientesPage {
       .then((data) => {
          this.hideForm 	= true;
          this.sendNotification(`${nomeFantasia} Foi removido com sucesso da lista de clientes`);
-         this.displayClientes();
+         this.getTodos();
       })
       .catch((err) => {
          console.log(err);

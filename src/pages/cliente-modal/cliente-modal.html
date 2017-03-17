@@ -19,25 +19,20 @@
             <ion-list>
                   <ion-item>
                         <ion-label floating>Nome</ion-label>
-                        <ion-input
-                              type="text"
+                        <ion-input type="text"
                               formControlName="nome"
                               [(ngModel)]="clienteNome"></ion-input>
                   </ion-item>
                   <ion-item>
                         <ion-label floating>Nome Fantasia</ion-label>
-                        <ion-input
-                              type="text"
+                        <ion-input type="text"
                               formControlName="nomeFantasia"
                               [(ngModel)]="clienteNomeFantasia"></ion-input>
                   </ion-item>
                   <ion-item>
                         <ion-label floating>Seguimento</ion-label>
-                        <ion-select
-                              class="select"
-                              interface="action-sheet"
+                        <ion-select class="select" interface="action-sheet" block
                               formControlName="seguimento"
-                              block
                               [(ngModel)]="clienteSeguimento">
                               <ion-option value="Bebida">Bebida</ion-option>
                               <ion-option value="Industia">Industia</ion-option>
@@ -45,24 +40,11 @@
                         </ion-select>
                   </ion-item>
                   <ion-item>
-                        <ion-toggle
-                        formControlName="ativo"
-                        [(ngModel)]="clienteAtivo"
-                        *ngIf="clienteAtivo!=''"></ion-toggle>
-                        <ion-toggle
-                        formControlName="ativo"
-                        checked="true"
-                        disabled="true"
-                        *ngIf="clienteAtivo==''"></ion-toggle>
-                        
                         <ion-label>Ativo</ion-label>
+                        <ion-toggle [(ngModel)]="clienteAtivo" formControlName="ativo" checked="true" (checked)="logEvent($event)"></ion-toggle>
                   </ion-item>
                   <ion-item>
-                  <button
-                        ion-button
-                        color="primary"
-                        text-center
-                        block
+                  <button ion-button color="primary" text-center block
                         [disabled]="!form.valid">Salvar</button>
                   </ion-item>
             </ion-list>

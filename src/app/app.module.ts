@@ -15,6 +15,7 @@ import { LocalidadesPage } from '../pages/localidades/localidades';
 import { Database } from '../providers/database';
 import { Image } from '../providers/image';
 import { DataCliente } from '../providers/dataCliente';
+import { DataLocalidade } from "../providers/dataLocalidade";
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { DataCliente } from '../providers/dataCliente';
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
               {provide: Database, useClass: Database},
-              {provide:Image, useClass: Image},
-              {provide: DataCliente, useClass: DataCliente},]
+              {provide: Image, useClass: Image},
+              {provide: DataCliente, useClass: DataCliente},
+              {provide: DataLocalidade, useClass: DataLocalidade},]
 })
 export class AppModule {}

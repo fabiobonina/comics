@@ -112,7 +112,7 @@ export class DataCliente {
       });
    }
 
-   updateDados(id, nome, nomeFantasia, ativo, seguimento, revision) {
+   updateDados(id, nome, nomeFantasia, seguimento, ativo, revision) {
       var cliente 		= {
              _id            : id,
              _rev 		    : revision,

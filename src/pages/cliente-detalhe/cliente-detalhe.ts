@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { DataCliente } from "../../providers/dataCliente";
-import { ClienteModalPage } from "../cliente-modal/cliente-modal";
 
 /*
   Generated class for the ClienteDetalhe page.

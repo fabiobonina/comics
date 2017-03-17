@@ -37,7 +37,7 @@ export class ClienteModalPage {
                 "nome"            : ["", Validators.required],
                 "nomeFantasia"    : ["", Validators.required],
                 "seguimento"      : ["", Validators.required],
-                "ativo"           : [""]
+                "ativo"           : ["", Validators.required]
               });
 
               this.limparDados();
@@ -56,6 +56,10 @@ export class ClienteModalPage {
                   this.pageTitle 		= 'Novo Cliente';
               }
    }
+
+   logEvent(e) {
+    console.log(e)
+  }
 
    select(id){
       this.DB.recuperarDados(id)
@@ -81,7 +85,7 @@ export class ClienteModalPage {
          this.DB.updateDados(id, nome, nomeFantasia, seguimento, ativo, revision)
          .then((data) =>{
             this.hideForm 			= true;
-            this.sendNotification(`${nomeFantasia} Foi atualizado em na lista de clientes`);
+            this.sendNotification(`${nomeFantasia} Foi atualizado na lista de clientes`);
          });
       }
       else{
@@ -89,7 +93,7 @@ export class ClienteModalPage {
          .then((data) =>{
             this.hideForm 			= true;
             this.limparDados();
-            this.sendNotification(`${nomeFantasia} Foi adicionado a na lista de clientes`);
+            this.sendNotification(`${nomeFantasia} Foi adicionado a lista de clientes`);
          });
       }
    }

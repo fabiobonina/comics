@@ -15,32 +15,18 @@
 
 </ion-header>
 
-<ion-content padding color="cinsa">
-
-   <ion-item>
-      <button
-         class="add"
-         ion-button
-         item-right
-         icon-right
-         margin-bottom
-         color="primary"
-         (click)="addCliente()">
-            Add Cliente
-            <ion-icon name="add"></ion-icon>
-      </button>
-   </ion-item>
-
-   <div *ngIf="temDados" color="cinsa">
+<ion-content padding>
+   <div *ngIf="temDados">
       <ion-list *ngFor="let cliente of clientes">
         <ion-item-sliding>
          <ion-item>
             <h2>{{ cliente.nomeFantasia }} </h2>
-            <h3>{{cliente.nome}}</h3>
-            <h3>{{cliente.seguimento}}</h3>
-            <button ion-button clear item-right
-               (click)="viewCliente({'key':cliente.id, 'rev':cliente.rev })">
-                   <ion-icon name="arrow-forward"> Detalhe</ion-icon>
+            <p>{{ cliente.nome }}</p>
+            <p>{{ cliente.seguimento }} | {{ cliente.ativo }}</p>
+            
+            <button ion-button clear item-right icon-right
+               (click)="viewDados({'key':cliente.id, 'rev':cliente.rev })"> Detalhe
+                   <ion-icon name="arrow-forward"> </ion-icon>
             </button>
          </ion-item>
           <ion-item-options side="right">
@@ -56,4 +42,9 @@
         </ion-item-sliding>
       </ion-list>
    </div>
+   <ion-fab bottom right >
+    <button ion-fab color="danger" (click)="insert()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>

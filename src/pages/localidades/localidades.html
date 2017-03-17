@@ -6,8 +6,8 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>localidades</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>Localidades</ion-title>
     <button ion-button menuToggle>
       <ion-icon name="menu"> </ion-icon>
     </button>
@@ -16,39 +16,35 @@
 </ion-header>
 
 <ion-content padding>
-
-
-   <ion-item>
-      <button
-         class="add"
-         ion-button
-         item-right
-         icon-right
-         margin-bottom
-         color="primary"
-         (click)="addCharacter()">
-            Add Cliente
-            <ion-icon name="add"></ion-icon>
-      </button>
-   </ion-item>
-
    <div *ngIf="temDados">
-      <ion-list>
-
-         <ion-item *ngFor="let cliente of clientes">
-            <ion-thumbnail item-left>
-               <img [src]="cliente.image">
-            </ion-thumbnail>
-            <h2>{{ cliente.nomeFantasia }} </h2>
-            <button
-               ion-button
-               clear
-               item-right
-               (click)="viewCliente({'key':cliente.id, 'rev':cliente.rev })">
-                   <ion-icon name="expand"></ion-icon>
+      <ion-list *ngFor="let local of localidades">
+        <ion-item-sliding>
+         <ion-item>
+            <h2>{{ local.nome }} </h2>
+            <p>{{ local.cliente }}</p>
+            <p>{{ local.tipo }} | {{ local.ativo }}</p>
+            
+            <button ion-button clear item-right icon-right
+               (click)="viewDados({'key':local.id, 'rev':local.rev })"> Detalhe
+                   <ion-icon name="arrow-forward"> </ion-icon>
             </button>
          </ion-item>
-
+          <ion-item-options side="right">
+            <button ion-button color="danger" (click)="delete(local.id)">
+                  Deletar<ion-icon name="trash"></ion-icon>
+            </button>
+          </ion-item-options>
+          <ion-item-options side="left">
+            <button ion-button color="primary" (click)="update({'key':local.id, 'rev':local.rev })">
+                  Editar<ion-icon name="md-create"></ion-icon>
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
       </ion-list>
    </div>
+   <ion-fab bottom right >
+    <button ion-fab color="danger" (click)="insert()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>
