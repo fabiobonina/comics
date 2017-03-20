@@ -14,8 +14,6 @@ import { DataLocalidade } from "../../providers/dataLocalidade";
 })
 export class LocalidadeDetalhePage {
 
-
-
   public recordId        : any;
   public revisionId      : any;
   public localCliente    : any;
@@ -57,8 +55,11 @@ export class LocalidadeDetalhePage {
          this.recordId 				  = doc[0].id;
          this.revisionId 			  = doc[0].rev;
       });
+      console.log(this.localLat);
    }
 
+   
+   
    sendNotification(message)  : void {
       let notification = this.toastCtrl.create( {
          message 	: message,

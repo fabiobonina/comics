@@ -16,6 +16,7 @@
 </ion-header>
 
 <ion-content padding>
+    <ion-searchbar (input)="getItems($event)"></ion-searchbar>
    <div *ngIf="temDados">
       <ion-list *ngFor="let local of localidades">
         <ion-item-sliding>

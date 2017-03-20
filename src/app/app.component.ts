@@ -5,18 +5,22 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 import { HomePage } from '../pages/home/home';
 import { LocalidadesPage } from '../pages/localidades/localidades';
 import { ClientesPage } from '../pages/clientes/clientes';
+import { BemFilhoPage } from "../pages/bem-filho/bem-filho";
+import { BemPaiPage } from "../pages/bem-pai/bem-pai";
 
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage = HomePage;
+  rootPage = BemPaiPage;
 
   home = HomePage;
-  //usuario = UsuarioPage;
   clientes = ClientesPage;
   localidades = LocalidadesPage;
+  bemPai = BemPaiPage;
+  BemFilho = BemFilhoPage;
+  //usuario = UsuarioPage;
   //signup = SignupPage;
 
   constructor(platform: Platform) {

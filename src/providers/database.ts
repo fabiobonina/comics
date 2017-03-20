@@ -28,7 +28,8 @@ export class Database {
 
    initialiseDB(){
         this._DB 			= new PouchDB('comics');
-        this._remoteDB 		= 'http://192.168.10.186:5984/comics';
+        //this._remoteDB 		= 'http://192.168.10.186:5984/comics';
+        this._remoteDB 		= 'http://localhost:5984/comics';
         this._syncOpts 		= { live 	  :true,
                                 retry 	  :true,
                                 continuous:true };
