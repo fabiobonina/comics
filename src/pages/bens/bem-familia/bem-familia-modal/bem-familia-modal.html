@@ -1,0 +1,118 @@
+<ion-header>
+   <ion-toolbar>
+      <ion-title>
+         {{ title }}
+      </ion-title>
+      <ion-buttons start>
+         <button
+            ion-button
+            (click)="closeModal()">
+           <span
+              ion-text
+              color="primary"
+              showWhen="ios">Cancel</span>
+           <ion-icon
+              name="md-close"
+              showWhen="android,windows"></ion-icon>
+         </button>
+      </ion-buttons>
+   </ion-toolbar>
+</ion-header>
+<ion-content>
+   <form
+      [formGroup]="form"
+      (ngSubmit)="save(form.value)">
+
+   	  <ion-item-divider color="light">
+         <div *ngIf="!isEditable">
+            Adicionar 
+         </div>
+
+         <div *ngIf="isEditable">
+            Alterar
+         </div>
+   	  </ion-item-divider>
+
+
+   	  <ion-item>
+         <ion-label stacked>Nome:</ion-label>
+         <ion-input
+            type="text"
+            formControlName="name"
+            [(ngModel)]="itemName"></ion-input>
+   	  </ion-item>
+
+   	  <ion-item>
+         <ion-label stacked>Codigo:</ion-label>
+         <ion-input
+            type="text"
+            formControlName="codigo"
+            [(ngModel)]="itemDuration"></ion-input>
+   	  </ion-item>
+
+
+
+   	  <ion-item>
+         <ion-label stacked>Grupo:</ion-label>
+         <ion-select
+            formControlName="grupo"
+            multiple="true"
+            [(ngModel)]="itemGrupo">
+             <ion-option value="Action">Action</ion-option>
+             <ion-option value="Comedy">Comedy</ion-option>
+             <ion-option value="Documentary">Documentary</ion-option>
+             <ion-option value="Historical">Historical</ion-option>
+             <ion-option value="Romance">Romance</ion-option>
+             <ion-option value="Science Fiction">Science Fiction</ion-option>
+             <ion-option value="Thriller">Thriller</ion-option>
+             <ion-option value="Zombie">Zombie</ion-option>
+             <ion-option value="War">War</ion-option>
+         </ion-select>
+   	  </ion-item>
+
+
+
+
+
+   	  <ion-item>
+         <ion-label stacked>Summary:</ion-label>
+         <ion-textarea
+			rows="6"
+            formControlName="summary"
+            [(ngModel)]="itemSummary"></ion-textarea>
+   	  </ion-item>
+
+
+   	  <ion-item>
+         <ion-label stacked>Year released:</ion-label>
+         <ion-input
+            type="text"
+            formControlName="year"
+            [(ngModel)]="itemYear"></ion-input>
+   	  </ion-item>
+
+
+   	  <ion-item>
+   	     <input
+   	        type="hidden"
+   	        name="itemId">
+         <button
+           ion-button
+           block
+           color="primary"
+           text-center
+           padding-top
+           padding-bottom
+           [disabled]="!form.valid">
+            <div *ngIf="!isEditable">
+               Add a new item
+            </div>
+
+            <div *ngIf="isEditable">
+               Update this item
+            </div>
+            </button>
+   	  </ion-item>
+
+   </form>
+</ion-content>

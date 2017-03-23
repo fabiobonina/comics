@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { DataLocalidade } from "../../providers/dataLocalidade";
-import { LocalidadeModalPage } from "../localidade-modal/localidade-modal";
-import { LocalidadeDetalhePage } from "../localidade-detalhe/localidade-detalhe";
+import { LocalidadeDetalhePage } from "./localidade-detalhe/localidade-detalhe";
+import { LocalidadeModalPage } from "./localidade-modal/localidade-modal";
+
 
 /*
   Generated class for the Localidades page.

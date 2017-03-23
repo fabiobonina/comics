@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
-import { DataLocalidade } from "../../providers/dataLocalidade";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { DataCliente } from "../../providers/dataCliente";
+import { DataLocalidade } from "../../../providers/dataLocalidade";
+import { DataCliente } from "../../../providers/dataCliente";
+
 
 /*
   Generated class for the LocalidadeModal page.
@@ -38,7 +39,7 @@ export class LocalidadeModalPage {
               public navParams  : NavParams,
               public fb         : FormBuilder,
               public DB         : DataLocalidade,
-              public daoCliente         : DataCliente,
+              public daoCliente : DataCliente,
               public toastCtrl  : ToastController) {
 
                 this.daoCliente.recuperarTodos().then((data)=> {

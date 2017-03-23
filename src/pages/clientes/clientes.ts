@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { DataCliente } from "../../providers/dataCliente";
-import { ClienteModalPage } from "../cliente-modal/cliente-modal";
-import { ClienteDetalhePage } from "../cliente-detalhe/cliente-detalhe";
+import { ClienteDetalhePage } from "./cliente-detalhe/cliente-detalhe";
+import { ClienteModalPage } from "./cliente-modal/cliente-modal";
+
 
 /*
   Generated class for the Clientes page.
