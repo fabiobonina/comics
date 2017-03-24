@@ -18,10 +18,16 @@ import { DataCliente } from "../../../providers/dataCliente";
 export class LocalidadeModalPage {
 
   public form            : FormGroup;
-  public clientes        : any;
+  public isEdited        : boolean = false;
+  public hideForm        : boolean = false;
+  public pageTitle       : string;
+
   public recordId        : any;
   public revisionId      : any;
+  public clientes        : any;
+  
   public localClienteId  : any;
+  public clienteNome     : string;
   public localCliente    : any;
   public localNome       : any;
   public localTipo       : any;
@@ -30,10 +36,7 @@ export class LocalidadeModalPage {
   public localLat        : any;
   public localLong       : any;
   public localAtivo      : any;
-  public isEdited        : boolean = false;
-  public hideForm        : boolean = false;
-  public pageTitle       : string;
-  public clienteNome     : string;
+  
 
   constructor(public navCtrl    : NavController,
               public navParams  : NavParams,
@@ -47,7 +50,7 @@ export class LocalidadeModalPage {
                 });
                 this.form = fb.group({
                 "nome"      : ["", Validators.required],
-                "clienteId"   : ["", Validators.required],
+                "clienteId" : ["", Validators.required],
                 "tipo"      : ["", Validators.required],
                 "municipio" : ["", Validators.required],
                 "uf"        : ["", Validators.required],

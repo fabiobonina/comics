@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
 import { FormBuilder, Validators } from "@angular/forms";
 import { Preloader } from "../../../../providers/preloader";
 import { DataBemFamilia } from "../../../../providers/bens/data-bem-familia";
+import { DataProduto } from "../../../../providers/data-produto";
 
 /*
   Generated class for the BemFamiliaModal page.
@@ -18,59 +19,71 @@ export class BemFamiliaModalPage {
 
    public form             : any;
    public isEditable       : boolean = false;
+   public temDados     : boolean = false;
+   public pageTitle       : string;
 
    public dados            : any;
+   public recordId         : any;
+   public revisionId       : any;
    public itemCodigo       : any     = '';
-   public itemName         : any     = '';   
-   public itemcodigo      : any     = '';
+   public itemNome         : any     = '';   
+   public itemcodigo       : any     = '';
    public itemGrupoBem     : any     = [];
    public itemGrupoProduto : any     = [];
-
+   public itemAtivo        : any;
+   public produtos         : any;
   
    constructor(
       public navCtrl        : NavController,
-      public params         : NavParams,
+      public navParams      : NavParams,
       private _FB 	        : FormBuilder,
       public viewCtrl       : ViewController,
+      public toastCtrl      : ToastController,
       private _LOADER       : Preloader,
-      private _DB           : DataBemFamilia)
-   {
+      private _DB           : DataBemFamilia,
+      private _Prod         : DataProduto) {
+        this._Prod.recuperarTodos().then((data)=> {
+                  this.produtos = data;
+        });
       this.form 		= _FB.group({
-         'codigo' 		: ['', Validators.minLength(10)],
-         'grupoBem' 		: ['', Validators.maxLength(4)],
-         'name' 		: ['', Validators.required],
-         'duration'		: ['', Validators.required],
-         'image'		: ['', Validators.required],
-         'rating'		: ['', Validators.required],
-         'genres' 		: ['', Validators.required],
-         'actors' 		: ['', Validators.required]
+         'codigo' 		  : ['', Validators.minLength(10)],
+         'name' 		    : ['', Validators.required],
+         'grupoBem' 	  : ['', Validators.maxLength(4)],
+         'grupoProduto'	: ['', Validators.required],
+         "ativo"        : ["", Validators.required]
       });
 
-      this.dados = firebase.database().ref('films/');
+      this.limparDados();
 
+      if(navParams.get("key") && navParams.get("rev")){
+        this.recordId 			= navParams.get("key");
+        this.revisionId 		= navParams.get("rev");
+        this.isEditable 			= true;
+        this.select(this.recordId);
+        this.pageTitle 		= 'Editando Item';
+      }
+      else{
+          this.recordId 			= '';
+          this.revisionId 		= '';
+          this.isEditable 			= false;
+          this.pageTitle 		= 'Novo Item';
+      }
 
-      if(params.get('isEdited'))
-      {
-          let movie 		    = params.get('movie'), k;
+      if(navParams.get('isEditable')) {
+          let item 		    = navParams.get('item'), k;
 
-          this.movieName	    = movie.title;
-          this.movieDuration	= movie.duration;
-          this.moviecodigo   	= movie.codigo;
-          this.movieRating   	= movie.rating;
-          this.moviegrupoBem    	= movie.grupoBem;
-          this.movieImage       = movie.image;
-          this.filmImage        = movie.image;
-          this.movieId          = movie.id;
+          this.itemCodigo       = item.codigo;
+          this.itemNome	        = item.nome;
+          this.itemGrupoBem     = item.grupoBem;
+          this.itemGrupoProduto = item.grupoProduto;
+          this.itemId           = item.id;
 
-
-          for(k in movie.genres)
-          {
+          for(k in movie.genres) {
              this.movieGenres.push(movie.genres[k].name);
           }
 
 
-          for(k in movie.actors)
-          {
+          for(k in movie.actors) {
              this.movieActors.push(movie.actors[k].name);
           }
 
@@ -85,17 +98,16 @@ export class BemFamiliaModalPage {
    {
       this._LOADER.displayPreloader();
 
-      let title	    : string		= this.form.controls["name"].value,
-	 	  codigo 	: string 		= this.form.controls["codigo"].value,
-  		  rating  	: number		= this.form.controls["rating"].value,
-  		  genres  	: any		    = this.form.controls["genres"].value,
-  		  actors  	: any		    = this.form.controls["actors"].value,
-  		  duration 	: string		= this.form.controls["duration"].value,
-  		  grupoBem    	: string		= this.form.controls["grupoBem"].value,
-  		  image     : string        = this.filmImage,
-  		  types     : any           = [],
-  		  people    : any           = [],
-  		  k         : any;
+      let nome	    : string		= this.form.controls["name"].value,
+	 	      codigo 	  : string 		= this.form.controls["codigo"].value,
+          genres  	: any		    = this.form.controls["genres"].value,
+          actors  	: any		    = this.form.controls["actors"].value,
+          duration 	: string		= this.form.controls["duration"].value,
+          grupoBem    	: string		= this.form.controls["grupoBem"].value,
+          image     : string        = this.filmImage,
+          types     : any           = [],
+          people    : any           = [],
+          k         : any;
 
 
       for(k in genres)
@@ -196,15 +208,16 @@ export class BemFamiliaModalPage {
       this.viewCtrl.dismiss(val);
    }
 
-
-
-   selectImage()
-   {
-      this._IMG.selectImage()
-      .then((data) =>
-      {
-         this.filmImage = data;
-      });
+   limparDados() : void{
+      this.itemNome       = "";
+      this.itemCliente    = "";
+      this.itemMunicipio	 = "";
+      this.itemUF 	  	   = "";
+      this.itemTipo 	  	 = "";
+      this.itemLat        = "";
+      this.itemLong    	 = "";
+      this.itemAtivo 	   = "";
    }
+
 
 }
