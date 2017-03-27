@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { Observable } from "rxjs/Observable";
 import { AlertController } from "ionic-angular";
 import PouchDB from 'pouchdb';
 
@@ -13,11 +14,13 @@ import PouchDB from 'pouchdb';
 @Injectable()
 export class DataBemFamilia {
 
-  public _DB 		    : any;
+    public _DB 		    : any;
     private success 	: boolean = true;
     private _remoteDB 	: any;
     private _syncOpts 	: any;
-    private _nomeDB     : string = 'localidades';
+    private _nomeDB     : string = 'bens_familia';
+
+    data: any;
 
   constructor(public http: Http,
               public alertCtrl : AlertController) {
@@ -90,21 +93,10 @@ export class DataBemFamilia {
       });
    }
 
-   addDados(nome, clienteId, cliente, tipo, municipio, uf, ativo) {
-      var timeStamp 	= new Date().toISOString(),
-          localidade 	= {
-             _id 		: timeStamp,
-             nome 		: nome,
-             clienteId 	: clienteId,
-             cliente 	: cliente,
-             tipo 	    : tipo,
-             municipio 	: municipio,
-             uf 	    : uf,
-             ativo      : ativo
-          };
-
+   add(data) {
+      var bemFamilia = data;
       return new Promise(resolve => {
-         this._DB.put(localidade).catch((err) => {
+         this._DB.put(bemFamilia).catch((err) => {
             console.log('error is: ' + err);
             this.success = false;
          });
@@ -116,21 +108,10 @@ export class DataBemFamilia {
       });
    }
 
-   updateDados(id, nome, clienteId, cliente, tipo, municipio, uf, ativo, revision) {
-      var localidade 	= {
-             _id        : id,
-             _rev 		: revision,
-             nome 		: nome,
-             clienteId 	: clienteId,
-             cliente 	: cliente,
-             tipo 	    : tipo,
-             municipio 	: municipio,
-             uf 	    : uf,
-             ativo      : ativo
-          };
-
+   update(data) {
+      var bemFamilia 	= data;
       return new Promise(resolve => {
-         this._DB.put(localidade)
+         this._DB.put(bemFamilia)
          .catch((err) => {
             console.log('error is: ' + err);
             this.success = false;
@@ -171,15 +152,13 @@ export class DataBemFamilia {
             let k,
                 items 	= [],
                 row 	= doc.rows;
-
             for(k in row) {
                var item 		     = row[k].doc;
-
                items.push( {
                     id 		    : item._id,
                     rev		    : item._rev,
                     nome		: item.nome,
-                    clienteId   : item.clienteId,
+                    tag         : item.tag,
                     cliente     : item.cliente,
                     tipo        : item.tipo,
                     municipio   : item.municipio,
@@ -192,6 +171,102 @@ export class DataBemFamilia {
          });
       });
    }
+
+   recuperar() {
+      return new Promise(resolve => {
+         this._DB.allDocs({include_docs: true, descending: true}, function(err, doc) {
+            let k,
+                items 	= [],
+                row 	= doc.rows;
+            for(k in row) {
+               var item 		     = row[k].doc;
+               items.push();
+            }
+
+            resolve(items);
+         });
+      });
+   }
+
+   getTodos1() {
+
+    return new Promise(resolve => {
+      this._DB.allDocs({include_docs: true, descending: true}, function(err, doc) {
+        let items 	= [],
+            rows;
+        let docs = rows.map((row) => {
+          items.push(row.doc);
+        });
+        resolve(items);
+      }).catch((error) => {
+  
+        console.log(error);
+  
+      }); 
+  
+    });
+ 
+  }
+
+   getTodos() {
+
+    //if (this.data) {
+    //  return Promise.resolve(this.data);
+    //}
+  
+    return new Promise(resolve => {
+  
+      this._DB.allDocs({ include_docs: true }).then((result) => {
+        this.data = [];
+        let docs = result.rows.map((row) => {
+          this.data.push(row.doc);
+        });
+        resolve(this.data);
+        this._DB.changes({live: true, since: 'now', include_docs: true}).on('change', (change) => {
+          //this.handleChange(change);
+        });
+  
+      }).catch((error) => {
+  
+        console.log(error);
+  
+      }); 
+  
+    });
+ 
+  }
+
+  handleChange(change){
+    let changedDoc = null;
+    let changedIndex = null;
+  
+    this.data.forEach((doc, index) => {
+  
+      if(doc._id === change.id){
+        changedDoc = doc;
+        changedIndex = index;
+      }
+  
+    });
+  
+    //A document was deleted
+    if(change.deleted){
+      this.data.splice(changedIndex, 1);
+    } 
+    else {
+  
+      //A document was updated
+      if(changedDoc){
+        this.data[changedIndex] = change.doc;
+      } 
+  
+      //A document was added
+      else {
+        this.data.push(change.doc); 
+      }
+  
+    }
+  }
 
    delete(id, rev) {
       return new Promise(resolve => {

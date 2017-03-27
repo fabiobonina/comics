@@ -17,21 +17,19 @@ import { DataProduto } from "../../../../providers/data-produto";
 })
 export class BemFamiliaModalPage {
 
-   public form             : any;
-   public isEditable       : boolean = false;
+   public form         : any;
+   public isEditable   : boolean = false;
    public temDados     : boolean = false;
-   public pageTitle       : string;
+   public pageTitle    : string;
 
-   public dados            : any;
-   public recordId         : any;
-   public revisionId       : any;
-   public itemCodigo       : any     = '';
-   public itemNome         : any     = '';   
-   public itemcodigo       : any     = '';
-   public itemGrupoBem     : any     = [];
-   public itemGrupoProduto : any     = [];
-   public itemAtivo        : any;
-   public produtos         : any;
+   public dados        : any = '';
+   public itemId       : any = '';
+   public itemRevId    : any = '';
+   public itemTag      : any = '';
+   public itemNome     : any = '';
+   public itemBens     : any = [];
+   public itemProdutos : any = [];
+   public itemAtivo    : any = '';
   
    constructor(
       public navCtrl        : NavController,
@@ -42,181 +40,112 @@ export class BemFamiliaModalPage {
       private _LOADER       : Preloader,
       private _DB           : DataBemFamilia,
       private _Prod         : DataProduto) {
-        this._Prod.recuperarTodos().then((data)=> {
-                  this.produtos = data;
-        });
+        
       this.form 		= _FB.group({
-         'codigo' 		  : ['', Validators.minLength(10)],
-         'name' 		    : ['', Validators.required],
-         'grupoBem' 	  : ['', Validators.maxLength(4)],
-         'grupoProduto'	: ['', Validators.required],
-         "ativo"        : ["", Validators.required]
+         'tag' 		  : ['', Validators.required],
+         'nome' 		: ['', Validators.required],
+         'bens' 	  : ['', Validators.required],
+         'produtos'	: ['', Validators.required],
+         "ativo"    : ['', Validators.required]
       });
 
-      this.limparDados();
+      if(navParams.get('isEditable')){
+        let item 		    = navParams.get('item'), k;
 
-      if(navParams.get("key") && navParams.get("rev")){
-        this.recordId 			= navParams.get("key");
-        this.revisionId 		= navParams.get("rev");
-        this.isEditable 			= true;
-        this.select(this.recordId);
+        this.itemId       = item.id;
+        this.itemRevId 	  = item.rev;
+        this.itemTag  	  = item.tag;
+        this.itemNome 	  = item.nome;
+        this.itemAtivo    = item.ativo;
         this.pageTitle 		= 'Editando Item';
-      }
-      else{
-          this.recordId 			= '';
-          this.revisionId 		= '';
-          this.isEditable 			= false;
-          this.pageTitle 		= 'Novo Item';
-      }
 
-      if(navParams.get('isEditable')) {
-          let item 		    = navParams.get('item'), k;
-
-          this.itemCodigo       = item.codigo;
-          this.itemNome	        = item.nome;
-          this.itemGrupoBem     = item.grupoBem;
-          this.itemGrupoProduto = item.grupoProduto;
-          this.itemId           = item.id;
-
-          for(k in movie.genres) {
-             this.movieGenres.push(movie.genres[k].name);
+        for(k in item.bens)
+          {
+             this.itemBens.push(item.bens[k].nome);
           }
 
 
-          for(k in movie.actors) {
-             this.movieActors.push(movie.actors[k].name);
-          }
+          for(k in item.produtos)
+          {
+             this.itemProdutos.push(item.produtos[k].nome);
+          } 
 
           this.isEditable      = true;
       }
+            
    }
 
 
 
 
-   saveMovie(val)
+   save(value)
    {
       this._LOADER.displayPreloader();
 
-      let nome	    : string		= this.form.controls["name"].value,
-	 	      codigo 	  : string 		= this.form.controls["codigo"].value,
-          genres  	: any		    = this.form.controls["genres"].value,
-          actors  	: any		    = this.form.controls["actors"].value,
-          duration 	: string		= this.form.controls["duration"].value,
-          grupoBem    	: string		= this.form.controls["grupoBem"].value,
-          image     : string        = this.filmImage,
-          types     : any           = [],
-          people    : any           = [],
-          k         : any;
+      let tag 	   : string 	= this.form.controls["tag"].value,
+          nome	   : string		= this.form.controls["nome"].value,
+	 	      bens  	 : any		  = this.form.controls["bens"].value,
+          produtos : any		  = this.form.controls["produtos"].value,
+          ativo 	 : boolean	= this.form.controls["ativo"].value,
+          types    : any      = [],
+          prod     : any      = [],
+          k        : any;
 
 
-      for(k in genres)
+      for(k in bens)
       {
          types.push({
-            "name" : genres[k]
+            "nome" : bens[k]
          });
       }
 
 
-      for(k in actors)
+      for(k in produtos)
       {
-         people.push({
-            "name" : actors[k]
+         prod.push({
+            "nome" : produtos[k]
          });
       }
 
+      var bemFamilia;
 
-      if(this.isEditable)
-      {
-
-         if(image !== this.movieImage)
-         {
-            this._DB.uploadImage(image)
-            .then((snapshot : any) =>
-            {
-               let uploadedImage : any = snapshot.downloadURL;
-
-               this._DB.updateDatabase(this.movieId,
-               {
-	              title    : title,
-	              codigo  : codigo,
-	              rating   : rating,
-	              duration : duration,
-	              image    : uploadedImage,
-	              genres   : types,
-	              actors   : people,
-	              grupoBem     : grupoBem
-	           })
-               .then((data) =>
-               {
-                  this._LOADER.hidePreloader();
-               });
-
-            });
-         }
-         else
-         {
-
-           this._DB.updateDatabase(this.movieId,
-           {
-	          title    : title,
-	          codigo  : codigo,
-	          rating   : rating,
-	          duration : duration,
-	          genres   : types,
-	          actors   : people,
-	          grupoBem     : grupoBem
-	       })
+      if(this.isEditable) {
+        bemFamilia 	= {
+            _id     : this.itemId,
+            _rev 		: this.itemRevId,
+            tag     : tag,
+	          nome    : nome,
+	          bens    : types,
+	          produtos : prod,
+	          ativo   : ativo
+          };
+         this._DB.update(bemFamilia)
            .then((data) =>
            {
               this._LOADER.hidePreloader();
            });
-	     }
-
       }
-      else
-      {
-         this._DB.uploadImage(image)
-         .then((snapshot : any) =>
-         {
-            let uploadedImage : any = snapshot.downloadURL;
-
-            this._DB.addToDatabase({
-	           title    : title,
-	           image    : uploadedImage,
-	           codigo  : codigo,
-	           rating   : rating,
-	           duration : duration,
-	           genres   : types,
-	           actors   : people,
-	           grupoBem     : grupoBem
-	        })
-            .then((data) =>
-            {
-               this._LOADER.hidePreloader();
-            });
-         });
-
+      else {
+        var timeStamp 	= new Date().toISOString();
+            bemFamilia = {
+              _id 		: timeStamp,
+              tag     : tag,
+              nome    : nome,
+              bens    : types,
+              produtos : prod,
+              ativo   : ativo
+            };
+         this._DB.add(bemFamilia)
+        .then((data) =>
+        {
+            this._LOADER.hidePreloader();
+        });
       }
       this.closeModal(true);
    }
 
-
-
-   closeModal(val = null)
-   {
+   closeModal(val = null) {
       this.viewCtrl.dismiss(val);
-   }
-
-   limparDados() : void{
-      this.itemNome       = "";
-      this.itemCliente    = "";
-      this.itemMunicipio	 = "";
-      this.itemUF 	  	   = "";
-      this.itemTipo 	  	 = "";
-      this.itemLat        = "";
-      this.itemLong    	 = "";
-      this.itemAtivo 	   = "";
    }
 
 

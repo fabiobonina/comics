@@ -22,8 +22,5 @@ export class BensPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad BensPage');
-  }
 
 }

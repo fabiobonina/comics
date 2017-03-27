@@ -30,6 +30,7 @@ import { BemFamiliaPage } from "../pages/bens/bem-familia/bem-familia";
 import { BemFamiliaModalPage } from "../pages/bens/bem-familia/bem-familia-modal/bem-familia-modal";
 import { DataBemFamilia } from "../providers/bens/data-bem-familia";
 import { Preloader } from "../providers/preloader";
+import { DataProduto } from "../providers/data-produto";
 
 
 
@@ -89,6 +90,7 @@ import { Preloader } from "../providers/preloader";
               {provide: DataBemPai, useClass: DataBemPai},
               {provide: DataBemFilho, useClass: DataBemFilho},
               {provide: DataBemFamilia, useClass: DataBemFamilia},
-              {provide: Preloader, useClass: Preloader},]
+              {provide: Preloader, useClass: Preloader},
+              {provide: DataProduto, useClass: DataProduto},]
 })
 export class AppModule {}

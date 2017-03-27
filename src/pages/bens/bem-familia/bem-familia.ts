@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, ToastController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ToastController, ModalController, Platform } from 'ionic-angular';
 import { DataBemFamilia } from "../../../providers/bens/data-bem-familia";
 import { Preloader } from "../../../providers/preloader";
 import { BemFamiliaModalPage } from "./bem-familia-modal/bem-familia-modal";
@@ -17,28 +17,23 @@ import { BemFamiliaModalPage } from "./bem-familia-modal/bem-familia-modal";
 export class BemFamiliaPage {
 
   public temDados        : boolean = false;
-  public isEdited        : boolean = false;
+  public isEditable      : boolean = false;
   public hideForm        : boolean = false;
   public pageTitle       : string;
 
-  public dados    : any;
-
-  public recordId        : any;
-  public revisionId      : any;
-  public localClienteId  : any;
-  public localCliente    : any;
-  public localNome       : any;
-  public localTipo       : any;
-  public localMunicipio  : any;
-  public localUF         : any;
-  public localLat        : any;
-  public localLong       : any;
-  public localAtivo      : any;
-  public localidades     : any;
+  public dados        : any = '';
+  public itemId       : any = '';
+  public itemRevId    : any = '';
+  public itemTag      : any = '';
+  public itemNome     : any = '';
+  public itemBens     : any = '';
+  public itemProdutos : any = '';
+  public itemAtivo    : any = '';
 
   constructor(public navCtrl    : NavController,
               private modalCtrl : ModalController,
               public navParams  : NavParams,
+              private platform     : Platform,
               public alertCtrl  : AlertController,
               public toastCtrl  : ToastController,
               private _LOADER   : Preloader,
@@ -49,16 +44,17 @@ export class BemFamiliaPage {
   }
 
   getTodos() {
-    this._DB.recuperarTodos().then((data)=> {
+    this._DB.getTodos1().then((data)=> {
         let existingData = Object.keys(data).length;
         if(existingData !== 0) {
           this.temDados 	 = true;
-          this.localidades = data;
+          this.dados = data;
         }
         else {
           console.log("não obtemos nada!");
         }
     });
+    console.log(this.dados);
     this._LOADER.hidePreloader();
   }
 
@@ -71,15 +67,10 @@ export class BemFamiliaPage {
     headsUp.present();
   }
 
-  
-
-  addRecord()
-   {
+  add() {
       let modal = this.modalCtrl.create(BemFamiliaModalPage);
-      modal.onDidDismiss((data) =>
-      {
-         if(data)
-         {
+      modal.onDidDismiss((data) => {
+         if(data) {
             this._LOADER.displayPreloader();
             this.getTodos();
          }
@@ -87,16 +78,12 @@ export class BemFamiliaPage {
       modal.present();
    }
 
-
-   editMovie(movie)
-   {
-      let params = { movie: movie, isEdited: true },
+   edit(item) {
+      let params = { item: item, isEditable: true },
           modal  = this.modalCtrl.create(BemFamiliaModalPage, params);
 
-      modal.onDidDismiss((data) =>
-      {
-         if(data)
-         {
+      modal.onDidDismiss((data) => {
+         if(data) {
             this._LOADER.displayPreloader();
             this.getTodos();
          }
@@ -104,22 +91,13 @@ export class BemFamiliaPage {
       modal.present();
    }
 
-
-
-   
-   delete(id) {
+   delete(item) {
      this._LOADER.displayPreloader();
-      let nome;
-      let revId;
-      this._DB.recuperarDados(id)
-      .then((doc) => {
-         nome         = doc[0].nome;
-         revId 			    = doc[0].rev;
-         return this._DB.delete(id, revId);
-      })
+      let nome = item.nome;
+      this._DB.delete(item.id, item.revId)
       .then((data) => {
          this.hideForm 	= true;
-         this.sendNotification(`${nome} Foi removido com sucesso da lista de clientes`);
+         this.sendNotification(`${nome} Foi removido com sucesso`);
          this.getTodos();
       })
       .catch((err) => {

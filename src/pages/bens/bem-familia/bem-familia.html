@@ -8,7 +8,7 @@
 
   <ion-navbar>
     <ion-title>Bem Familia</ion-title>
-  <button ion-button menuToggle>
+    <button ion-button menuToggle>
       <ion-icon name="menu"> </ion-icon>
     </button>
   </ion-navbar>
@@ -17,37 +17,120 @@
 
 
 <ion-content padding>
-  <ion-searchbar (input)="getItems($event)"></ion-searchbar>
    <div *ngIf="temDados">
-      <ion-list *ngFor="let local of localidades">
+      <ion-list *ngFor="let item of dados">
         <ion-item-sliding>
          <ion-item>
-            <h2>{{ local.nome }} </h2>
-            <p>{{ local.cliente }}</p>
-            <p>{{ local.tipo }} | {{ local.ativo }}</p>
+            <h2>{{ item.nome }} </h2>
+            <p>{{ item.tag }} | {{ item.ativo }}</p>
+             <section class="multiples">
+               <h3>Bens</h3>
+             <ion-chip
+                *ngFor="let bem of item.bens"
+                padding-left
+                padding-right
+                margin-right>{{ bem.nome }}</ion-chip>
+            </section>
+
+            <section class="multiples">
+               <h3>Produtos</h3>
+             <ion-chip
+                *ngFor="let produto of item.produtos"
+                padding-left
+                padding-right
+                margin-right>{{ produto.nome }}</ion-chip>
+            </section>
             
-            <button ion-button clear item-right icon-right
-               (click)="viewDados({'key':local.id, 'rev':local.rev })"> Detalhe
+            <!--button ion-button clear item-right icon-right
+               (click)="viewDados(item)"> Detalhe
                    <ion-icon name="arrow-forward"> </ion-icon>
-            </button>
+            </button-->
+
+
          </ion-item>
+            <section class="multiples">
+               <h3>Bens</h3>
+             <ion-chip
+                *ngFor="let bem of item.bens"
+                padding-left
+                padding-right
+                margin-right>{{ bem.nome }}</ion-chip>
+            </section>
+            <section class="multiples">
+               <h3>Produtos</h3>
+             <ion-chip
+                *ngFor="let produto of item.produtos"
+                padding-left
+                padding-right
+                margin-right>{{ produto.nome }}</ion-chip>
+            </section>
           <ion-item-options side="right">
-            <button ion-button color="danger" (click)="delete(local.id)">
+            <button ion-button color="danger" (click)="delete(item)">
                   Deletar<ion-icon name="trash"></ion-icon>
             </button>
           </ion-item-options>
           <ion-item-options side="left">
-            <button ion-button color="primary" (click)="update({'key':local.id, 'rev':local.rev })">
+            <button ion-button color="primary" (click)="edit(item)">
                   Editar<ion-icon name="md-create"></ion-icon>
             </button>
           </ion-item-options>
         </ion-item-sliding>
       </ion-list>
    </div>
+   <ion-list>
+      <ion-card
+         class="item"
+         text-wrap
+         *ngFor="let item of dados">
+         <ion-item>
+            <h2>{{ item.nome }}</h2>
+            <small>{{ item.tag }} ({{ item.ativo }})</small>
+
+            <section class="multiples">
+               <h3>Bens</h3>
+             <ion-chip
+                *ngFor="let bem of item.bens"
+                padding-left
+                padding-right
+                margin-right>{{ bem.nome }}</ion-chip>
+            </section>
+
+
+            <section class="multiples">
+               <h3>Produtos</h3>
+               <ion-chip
+                  *ngFor="let produto of item.produtos"
+                  padding-left
+                  padding-right
+                  margin-right>{{ produto.nome }}</ion-chip>
+            </section>
+
+         </ion-item>
+
+
+         <div class="manage-record" padding>
+           <button
+              ion-button
+              text-center
+              color="primary"
+              (click)="edit(item)">Edit</button>
+
+           <button
+              ion-button
+              text-center
+              color="danger"
+              (click)="delete(item)">Delete</button>
+       </div>
+
+      </ion-card>
+   </ion-list>
+
+
    <ion-fab bottom right >
-    <button ion-fab color="danger" (click)="insert()">
+    <button ion-fab color="danger" (click)="add()">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
+
 
 </ion-content>

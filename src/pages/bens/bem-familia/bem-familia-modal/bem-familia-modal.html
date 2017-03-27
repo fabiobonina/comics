@@ -38,58 +38,47 @@
          <ion-label stacked>Nome:</ion-label>
          <ion-input
             type="text"
-            formControlName="name"
-            [(ngModel)]="itemName"></ion-input>
+            formControlName="nome"
+            [(ngModel)]="itemNome"></ion-input>
    	  </ion-item>
 
    	  <ion-item>
-         <ion-label stacked>Codigo:</ion-label>
+         <ion-label stacked>Tag:</ion-label>
          <ion-input
             type="text"
-            formControlName="codigo"
-            [(ngModel)]="itemDuration"></ion-input>
+            formControlName="tag"
+            [(ngModel)]="itemTag"></ion-input>
    	  </ion-item>
 
-
-
    	  <ion-item>
-         <ion-label stacked>Grupo:</ion-label>
+         <ion-label stacked>Bens:</ion-label>
          <ion-select
-            formControlName="grupo"
+            formControlName="bens"
             multiple="true"
-            [(ngModel)]="itemGrupo">
-             <ion-option value="Action">Action</ion-option>
-             <ion-option value="Comedy">Comedy</ion-option>
-             <ion-option value="Documentary">Documentary</ion-option>
-             <ion-option value="Historical">Historical</ion-option>
-             <ion-option value="Romance">Romance</ion-option>
-             <ion-option value="Science Fiction">Science Fiction</ion-option>
-             <ion-option value="Thriller">Thriller</ion-option>
-             <ion-option value="Zombie">Zombie</ion-option>
-             <ion-option value="War">War</ion-option>
+            [(ngModel)]="itemBens">
+             <ion-option value="Primario">Primario</ion-option>
+             <ion-option value="Secundario">Secundario</ion-option>
          </ion-select>
    	  </ion-item>
 
-
-
-
-
-   	  <ion-item>
-         <ion-label stacked>Summary:</ion-label>
-         <ion-textarea
-			rows="6"
-            formControlName="summary"
-            [(ngModel)]="itemSummary"></ion-textarea>
+      <ion-item>
+         <ion-label stacked>Produtos:</ion-label>
+         <ion-select
+            formControlName="produtos"
+            multiple="true"
+            [(ngModel)]="itemProdutos">
+             <ion-option value="Cloro">Cloro</ion-option>
+             <ion-option value="Dioxido">Dioxido</ion-option>
+             <ion-option value="Pastinha">Pastinha</ion-option>
+             <ion-option value="PAC">PAC</ion-option>
+             <ion-option value="Outros">Outros</ion-option>
+         </ion-select>
    	  </ion-item>
-
-
-   	  <ion-item>
-         <ion-label stacked>Year released:</ion-label>
-         <ion-input
-            type="text"
-            formControlName="year"
-            [(ngModel)]="itemYear"></ion-input>
-   	  </ion-item>
+      
+      <ion-item>
+            <ion-label>Ativo</ion-label>
+            <ion-toggle [(ngModel)]="itemAtivo" formControlName="ativo" checked="false"></ion-toggle>
+      </ion-item>
 
 
    	  <ion-item>

@@ -72,6 +72,7 @@ export class LocalidadesPage {
   viewDados(param) {
     this.navCtrl.push(LocalidadeDetalhePage, param);
   }
+  
   insert() {
     this.navCtrl.push(LocalidadeModalPage);
   }
