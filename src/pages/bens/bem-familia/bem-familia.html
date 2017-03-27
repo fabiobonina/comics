@@ -23,23 +23,23 @@
          <ion-item>
             <h2>{{ item.nome }} </h2>
             <p>{{ item.tag }} | {{ item.ativo }}</p>
-             <section class="multiples">
+             <!--section class="multiples">
                <h3>Bens</h3>
              <ion-chip
                 *ngFor="let bem of item.bens"
                 padding-left
                 padding-right
                 margin-right>{{ bem.nome }}</ion-chip>
-            </section>
+            </section-->
 
-            <section class="multiples">
+            <!--section class="multiples">
                <h3>Produtos</h3>
              <ion-chip
                 *ngFor="let produto of item.produtos"
                 padding-left
                 padding-right
                 margin-right>{{ produto.nome }}</ion-chip>
-            </section>
+            </section-->
             
             <!--button ion-button clear item-right icon-right
                (click)="viewDados(item)"> Detalhe
@@ -48,22 +48,6 @@
 
 
          </ion-item>
-            <section class="multiples">
-               <h3>Bens</h3>
-             <ion-chip
-                *ngFor="let bem of item.bens"
-                padding-left
-                padding-right
-                margin-right>{{ bem.nome }}</ion-chip>
-            </section>
-            <section class="multiples">
-               <h3>Produtos</h3>
-             <ion-chip
-                *ngFor="let produto of item.produtos"
-                padding-left
-                padding-right
-                margin-right>{{ produto.nome }}</ion-chip>
-            </section>
           <ion-item-options side="right">
             <button ion-button color="danger" (click)="delete(item)">
                   Deletar<ion-icon name="trash"></ion-icon>

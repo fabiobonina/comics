@@ -20,7 +20,7 @@ export class DataBemFamilia {
     private _syncOpts 	: any;
     private _nomeDB     : string = 'bens_familia';
 
-    data: any;
+    //data: any;
 
   constructor(public http: Http,
               public alertCtrl : AlertController) {
@@ -29,8 +29,8 @@ export class DataBemFamilia {
 
    inicializarDB(){
         this._DB 			= new PouchDB(this._nomeDB);
-       //this._remoteDB 		= 'http://192.168.10.186:5984/' + this._nomeDB;
-       this._remoteDB 		= 'http://localhost:5984/' + this._nomeDB;
+       this._remoteDB 		= 'http://192.168.10.186:5984/' + this._nomeDB;
+       //this._remoteDB 		= 'http://localhost:5984/' + this._nomeDB;
         this._syncOpts 		= { live 	  :true,
                                 retry 	  :true,
                                 continuous:true };
@@ -71,7 +71,7 @@ export class DataBemFamilia {
       this._DB.changes({
          since 		     : 'now',
          live 		     : true,
-         include_docs 	 : true,
+         include_docs  : true,
          attachments 	 : true
       })
       .on('change', (change) =>
@@ -132,13 +132,11 @@ export class DataBemFamilia {
             item.push( {
                 id 		    : id,
                 rev		    : doc._rev,
-                nome		: doc.nome,
-                clienteId   : doc.clienteId,
-                cliente     : doc.cliente,
-                tipo        : doc.tipo,
-                municipio   : doc.municipio,
-                uf          : doc.uf,
-                ativo		: doc.ativo
+                nome		  : doc.nome,
+                tag       : doc.tag,
+                bens      : doc.bens,
+                produtos  : doc.produtos,
+                ativo		  : doc.ativo
             });
 
             resolve(item);
@@ -155,15 +153,13 @@ export class DataBemFamilia {
             for(k in row) {
                var item 		     = row[k].doc;
                items.push( {
-                    id 		    : item._id,
-                    rev		    : item._rev,
-                    nome		: item.nome,
+                    id 		      : item._id,
+                    rev		      : item._rev,
+                    nome		    : item.nome,
                     tag         : item.tag,
-                    cliente     : item.cliente,
-                    tipo        : item.tipo,
-                    municipio   : item.municipio,
-                    uf          : item.uf,
-                    ativo		: item.ativo
+                    bens        : item.bens,
+                    produtos    : item.produtos,
+                    ativo		    : item.ativo
                });
             }
 
@@ -171,42 +167,6 @@ export class DataBemFamilia {
          });
       });
    }
-
-   recuperar() {
-      return new Promise(resolve => {
-         this._DB.allDocs({include_docs: true, descending: true}, function(err, doc) {
-            let k,
-                items 	= [],
-                row 	= doc.rows;
-            for(k in row) {
-               var item 		     = row[k].doc;
-               items.push();
-            }
-
-            resolve(items);
-         });
-      });
-   }
-
-   getTodos1() {
-
-    return new Promise(resolve => {
-      this._DB.allDocs({include_docs: true, descending: true}, function(err, doc) {
-        let items 	= [],
-            rows;
-        let docs = rows.map((row) => {
-          items.push(row.doc);
-        });
-        resolve(items);
-      }).catch((error) => {
-  
-        console.log(error);
-  
-      }); 
-  
-    });
- 
-  }
 
    getTodos() {
 
@@ -217,11 +177,11 @@ export class DataBemFamilia {
     return new Promise(resolve => {
   
       this._DB.allDocs({ include_docs: true }).then((result) => {
-        this.data = [];
-        let docs = result.rows.map((row) => {
-          this.data.push(row.doc);
+        let data = [],
+            docs = result.rows.map((row) => {
+            data.push(row.doc);
         });
-        resolve(this.data);
+        resolve(data);
         this._DB.changes({live: true, since: 'now', include_docs: true}).on('change', (change) => {
           //this.handleChange(change);
         });
@@ -236,7 +196,7 @@ export class DataBemFamilia {
  
   }
 
-  handleChange(change){
+  /*handleChange(change){
     let changedDoc = null;
     let changedIndex = null;
   
@@ -266,7 +226,7 @@ export class DataBemFamilia {
       }
   
     }
-  }
+  }*/
 
    delete(id, rev) {
       return new Promise(resolve => {

@@ -33,7 +33,7 @@ export class BemFamiliaPage {
   constructor(public navCtrl    : NavController,
               private modalCtrl : ModalController,
               public navParams  : NavParams,
-              private platform     : Platform,
+              private platform  : Platform,
               public alertCtrl  : AlertController,
               public toastCtrl  : ToastController,
               private _LOADER   : Preloader,
@@ -44,7 +44,7 @@ export class BemFamiliaPage {
   }
 
   getTodos() {
-    this._DB.getTodos1().then((data)=> {
+    this._DB.getTodos().then((data)=> {
         let existingData = Object.keys(data).length;
         if(existingData !== 0) {
           this.temDados 	 = true;
