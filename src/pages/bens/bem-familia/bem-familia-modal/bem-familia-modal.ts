@@ -75,18 +75,17 @@ export class BemFamiliaModalPage {
             
    }
 
-
-
-
    save(value)
    {
       this._LOADER.displayPreloader();
 
-      let tag 	   : string 	= this.form.controls["tag"].value,
-          nome	   : string		= this.form.controls["nome"].value,
+      let nome	   : string		= this.form.controls["nome"].value,
+          tag 	   : string 	= this.form.controls["tag"].value,
 	 	      bens  	 : any		  = this.form.controls["bens"].value,
           produtos : any		  = this.form.controls["produtos"].value,
           ativo 	 : boolean	= this.form.controls["ativo"].value,
+          id       : any     	= this.itemId,
+  	      revision : string 	= this.itemRevId,
           types    : any      = [],
           prod     : any      = [],
           k        : any;
@@ -111,13 +110,13 @@ export class BemFamiliaModalPage {
 
       if(this.isEditable) {
         bemFamilia 	= {
-            _id     : this.itemId,
-            _rev 		: this.itemRevId,
-            tag     : tag,
-	          nome    : nome,
-	          bens    : types,
-	          produtos : prod,
-	          ativo   : ativo
+            _id       : id,
+            _rev 		  : revision,
+	          nome      : nome,
+            tag       : tag,
+	          bens      : types,
+	          produtos  : prod,
+	          ativo     : ativo
           };
          this._DB.update(bemFamilia)
            .then((data) =>
