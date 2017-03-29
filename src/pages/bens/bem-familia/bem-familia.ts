@@ -19,16 +19,8 @@ export class BemFamiliaPage {
   public temDados        : boolean = false;
   public isEditable      : boolean = false;
   public hideForm        : boolean = false;
-  public pageTitle       : string;
 
   public dados        : any = '';
-  public itemId       : any = '';
-  public itemRevId    : any = '';
-  public itemTag      : any = '';
-  public itemNome     : any = '';
-  public itemBens     : any = '';
-  public itemProdutos : any = '';
-  public itemAtivo    : any = '';
 
   constructor(public navCtrl    : NavController,
               private modalCtrl : ModalController,
@@ -37,7 +29,7 @@ export class BemFamiliaPage {
               public alertCtrl  : AlertController,
               public toastCtrl  : ToastController,
               private _LOADER   : Preloader,
-              public _DB         : DataBemFamilia) {}
+              public _DB        : DataBemFamilia) {}
 
   ionViewWillEnter() {
       this.getTodos();
@@ -94,7 +86,7 @@ export class BemFamiliaPage {
    delete(item) {
      this._LOADER.displayPreloader();
       let nome = item.nome;
-      this._DB.delete(item.id, item.revId)
+      this._DB.delete(item._id, item._rev)
       .then((data) => {
          this.hideForm 	= true;
          this.sendNotification(`${nome} Foi removido com sucesso`);
@@ -112,6 +104,5 @@ export class BemFamiliaPage {
       });
       notification.present();
    }
-
 
 }

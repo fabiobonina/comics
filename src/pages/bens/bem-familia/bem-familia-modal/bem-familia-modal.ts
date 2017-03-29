@@ -52,25 +52,21 @@ export class BemFamiliaModalPage {
       if(navParams.get('isEditable')){
         let item 		    = navParams.get('item'), k;
 
-        this.itemId       = item.id;
-        this.itemRevId 	  = item.rev;
+        this.itemId       = item._id;
+        this.itemRevId 	  = item._rev;
         this.itemTag  	  = item.tag;
         this.itemNome 	  = item.nome;
         this.itemAtivo    = item.ativo;
-        this.pageTitle 		= 'Editando Item';
 
-        for(k in item.bens)
-          {
+        for(k in item.bens) {
              this.itemBens.push(item.bens[k].nome);
-          }
+        }
 
+        for(k in item.produtos) {
+            this.itemProdutos.push(item.produtos[k].nome);
+        } 
 
-          for(k in item.produtos)
-          {
-             this.itemProdutos.push(item.produtos[k].nome);
-          } 
-
-          this.isEditable      = true;
+          this.isEditable  = true;
       }
             
    }
@@ -90,17 +86,13 @@ export class BemFamiliaModalPage {
           prod     : any      = [],
           k        : any;
 
-
-      for(k in bens)
-      {
+      for(k in bens) {
          types.push({
             "nome" : bens[k]
          });
       }
 
-
-      for(k in produtos)
-      {
+      for(k in produtos) {
          prod.push({
             "nome" : produtos[k]
          });
@@ -127,12 +119,12 @@ export class BemFamiliaModalPage {
       else {
         var timeStamp 	= new Date().toISOString();
             bemFamilia = {
-              _id 		: timeStamp,
-              tag     : tag,
-              nome    : nome,
-              bens    : types,
+              _id 		 : timeStamp,
+              nome     : nome,
+              tag      : tag,
+              bens     : types,
               produtos : prod,
-              ativo   : ativo
+              ativo    : ativo
             };
          this._DB.add(bemFamilia)
         .then((data) =>
