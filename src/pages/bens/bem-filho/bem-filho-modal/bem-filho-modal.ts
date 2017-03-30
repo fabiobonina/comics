@@ -22,15 +22,19 @@ export class BemFilhoModalPage {
    public temDados     : boolean = false;
    public pageTitle    : string;
 
-   public dados          : any = '';
-   public familias          : any = '';
-   public itemId         : any = '';
-   public itemRevId      : any = '';
-   public itemIdentidade : any = '';
-   public itemNome     : any = '';
-   public itemBens     : any = [];
-   public itemProdutos : any = [];
-   public itemAtivo    : any = '';
+   public dados           : any = '';
+   public itemId          : any = '';
+   public itemRevId       : any = '';
+   public itemFamiliaId   : any = '';
+   public itemFamiliaTAG  : any = '';
+   public itemFamiliaNome : any = '';
+   public itemFabricante  : any = '';
+   public itemModelo      : any = '';
+   public itemCapacidade  : any = '';
+   public itemNSerie      : any = '';
+   public itemDtFabric    : any = '';
+   public familias        : any = '';
+   public itemAtivo       : any = '';
   
    constructor(
       public navCtrl       : NavController,
@@ -47,8 +51,8 @@ export class BemFilhoModalPage {
         });
           
         this.form 		= _FB.group({
-          'tag' 		  : ['', Validators.required],
-          'nome' 		: ['', Validators.required],
+          'familiaId' 		  : ['', Validators.required],
+          'fabricante' 		: ['', Validators.required],
           'bens' 	  : ['', Validators.required],
           'produtos'	: ['', Validators.required],
           "ativo"    : ['', Validators.required]
@@ -57,11 +61,11 @@ export class BemFilhoModalPage {
         if(navParams.get('isEditable')){
           let item 		    = navParams.get('item'), k  ;
 
-          this.itemId       =   item._id;
-          this.itemRevId 	     = item._rev;
-          this.itemIdentidade= item.tag;
-          this.itemNome 	  = item.nome;
-          this.itemAtivo    = item.ativo;
+          this.itemId         =   item._id;
+          this.itemRevId 	    = item._rev;
+          this.itemIdentidade = item.tag;
+          this.itemNome 	    = item.nome;
+          this.itemAtivo      = item.ativo;
 
           for(k in item.bens) {
               this.itemBens.push(item.bens[k].nome);
