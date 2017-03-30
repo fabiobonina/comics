@@ -32,6 +32,16 @@
             Alterar
          </div>
    	  </ion-item-divider>
+      
+      <ion-item>
+        <ion-label stacked>Familia do Bem</ion-label>
+        <ion-select
+            class="select"
+            formControlName="familiaId" 
+            [(ngModel)]="temFamiliaId">
+            <ion-option *ngFor="let familia of familias" value="{{familia.id}}">{{item.nome}}</ion-option>
+        </ion-select>
+      </ion-item>
 
 
    	  <ion-item>

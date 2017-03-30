@@ -17,15 +17,16 @@ import { DataBemFilho } from "../../../../providers/bens/data-bem-filho";
 })
 export class BemFilhoModalPage {
 
-  public form         : any;
+   public form         : any;
    public isEditable   : boolean = false;
    public temDados     : boolean = false;
    public pageTitle    : string;
 
-   public dados        : any = '';
-   public itemId       : any = '';
-   public itemRevId    : any = '';
-   public itemTag      : any = '';
+   public dados          : any = '';
+   public familias          : any = '';
+   public itemId         : any = '';
+   public itemRevId      : any = '';
+   public itemIdentidade : any = '';
    public itemNome     : any = '';
    public itemBens     : any = [];
    public itemProdutos : any = [];
@@ -40,34 +41,38 @@ export class BemFilhoModalPage {
       public _LOADER       : Preloader,
       public _DB           : DataBemFilho,
       public _DBFamilia    : DataBemFamilia) {
-        
-      this.form 		= _FB.group({
-         'tag' 		  : ['', Validators.required],
-         'nome' 		: ['', Validators.required],
-         'bens' 	  : ['', Validators.required],
-         'produtos'	: ['', Validators.required],
-         "ativo"    : ['', Validators.required]
-      });
+      
+        this._DBFamilia.getTodos().then((data)=> {
+            this.familias = data;
+        });
+          
+        this.form 		= _FB.group({
+          'tag' 		  : ['', Validators.required],
+          'nome' 		: ['', Validators.required],
+          'bens' 	  : ['', Validators.required],
+          'produtos'	: ['', Validators.required],
+          "ativo"    : ['', Validators.required]
+        });
 
-      if(navParams.get('isEditable')){
-        let item 		    = navParams.get('item'), k;
+        if(navParams.get('isEditable')){
+          let item 		    = navParams.get('item'), k  ;
 
-        this.itemId       = item._id;
-        this.itemRevId 	  = item._rev;
-        this.itemTag  	  = item.tag;
-        this.itemNome 	  = item.nome;
-        this.itemAtivo    = item.ativo;
+          this.itemId       =   item._id;
+          this.itemRevId 	     = item._rev;
+          this.itemIdentidade= item.tag;
+          this.itemNome 	  = item.nome;
+          this.itemAtivo    = item.ativo;
 
-        for(k in item.bens) {
-             this.itemBens.push(item.bens[k].nome);
+          for(k in item.bens) {
+              this.itemBens.push(item.bens[k].nome);
+          }
+
+          for(k in item.produtos) {
+              this.itemProdutos.push(item.produtos[k].nome);
+          } 
+
+            this.isEditable  = true;
         }
-
-        for(k in item.produtos) {
-            this.itemProdutos.push(item.produtos[k].nome);
-        } 
-
-          this.isEditable  = true;
-      }
             
    }
 

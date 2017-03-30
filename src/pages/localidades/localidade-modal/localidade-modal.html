@@ -17,12 +17,6 @@
       <div *ngIf="!hideForm">
          <form [formGroup]="form" (ngSubmit)="save()">
             <ion-list>
-                  <!--ion-item>
-                        <ion-label floating>Cliente</ion-label>
-                        <ion-input type="text"
-                              formControlName="nomeCliente"
-                              [(ngModel)]="localNomeCliente"></ion-input>
-                  </ion-item-->
                   <ion-item>
                     <ion-label stacked>Cliente</ion-label>
                     <ion-select
