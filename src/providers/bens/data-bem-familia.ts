@@ -129,15 +129,7 @@ export class DataBemFamilia {
          this._DB.get(id) 
          .then((doc)=> {
             var item 			= [];
-            item.push( {
-                id 		    : id,
-                rev		    : doc._rev,
-                nome		  : doc.nome,
-                tag       : doc.tag,
-                bens      : doc.bens,
-                produtos  : doc.produtos,
-                ativo		  : doc.ativo
-            });
+            item.push( doc );
 
             resolve(item);
          })

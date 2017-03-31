@@ -21,19 +21,20 @@ export class BemFilhoModalPage {
    public isEditable   : boolean = false;
    public temDados     : boolean = false;
    public pageTitle    : string;
-
+   
+   public familias        : any = '';
    public dados           : any = '';
+   
    public itemId          : any = '';
    public itemRevId       : any = '';
    public itemFamiliaId   : any = '';
-   public itemFamiliaTAG  : any = '';
+   public itemFamiliaTag  : any = '';
    public itemFamiliaNome : any = '';
    public itemFabricante  : any = '';
    public itemModelo      : any = '';
    public itemCapacidade  : any = '';
    public itemNSerie      : any = '';
    public itemDtFabric    : any = '';
-   public familias        : any = '';
    public itemAtivo       : any = '';
   
    constructor(
@@ -51,101 +52,102 @@ export class BemFilhoModalPage {
         });
           
         this.form 		= _FB.group({
-          'familiaId' 		  : ['', Validators.required],
-          'fabricante' 		: ['', Validators.required],
-          'bens' 	  : ['', Validators.required],
-          'produtos'	: ['', Validators.required],
-          "ativo"    : ['', Validators.required]
+          'familiaId' 	: ['', Validators.required],
+          'fabricante' 	: ['', Validators.required],
+          'modelo' 	    : ['', Validators.required],
+          'capacidade'	: ['', Validators.required],
+          'nSerie'	    : ['', Validators.required],
+          'dtFabric'	  : ['', Validators.required],
+          "ativo"       : ['', Validators.required]
         });
 
         if(navParams.get('isEditable')){
           let item 		    = navParams.get('item'), k  ;
 
-          this.itemId         =   item._id;
-          this.itemRevId 	    = item._rev;
-          this.itemIdentidade = item.tag;
-          this.itemNome 	    = item.nome;
-          this.itemAtivo      = item.ativo;
+          this.itemId          = item._id;
+          this.itemRevId 	     = item._rev;
+          this.itemFamiliaId   = item.familiaId;
+          this.itemFamiliaTag  = item.familiaTag;
+          this.itemFamiliaNome = item.familiaNome;
+          this.itemFabricante  = item.fabricante;
+          this.itemModelo      = item.modelo;
+          this.itemCapacidade  = item.capacidade;
+          this.itemNSerie      = item.nSerie;
+          this.itemDtFabric    = item.dtFabric;
+          this.itemNSerie      = item.nSerie;
+          this.itemAtivo       = item.ativo;
 
-          for(k in item.bens) {
-              this.itemBens.push(item.bens[k].nome);
-          }
-
-          for(k in item.produtos) {
-              this.itemProdutos.push(item.produtos[k].nome);
-          } 
-
-            this.isEditable  = true;
+          this.isEditable     = true;
         }
             
    }
 
-   save(value)
-   {
+   save(value) {
       this._LOADER.displayPreloader();
 
-      let nome	   : string		= this.form.controls["nome"].value,
-          tag 	   : string 	= this.form.controls["tag"].value,
-	 	      bens  	 : any		  = this.form.controls["bens"].value,
-          produtos : any		  = this.form.controls["produtos"].value,
-          ativo 	 : boolean	= this.form.controls["ativo"].value,
-          id       : any     	= this.itemId,
-  	      revision : string 	= this.itemRevId,
-          types    : any      = [],
-          prod     : any      = [],
-          k        : any;
+      let familiaId	 : string		= this.form.controls["familiaId"].value,
+          fabricante : string 	= this.form.controls["fabricante"].value,
+	 	      modelo  	 : any		  = this.form.controls["modelo"].value,
+          capacidade : any		  = this.form.controls["capacidade"].value,
+          nSerie     : any		  = this.form.controls["nSerie"].value,
+          dtFabric   : any		  = this.form.controls["dtFabric"].value,
+          ativo 	   : boolean	= this.form.controls["ativo"].value,
+          id         : any     	= this.itemId,
+  	      revision   : string 	= this.itemRevId;
 
-      for(k in bens) {
-         types.push({
-            "nome" : bens[k]
-         });
-      }
+      //Coletar os dados
+      this._DBFamilia.recuperarDados(familiaId)
+        .then((doc)=>{
+          let familiaNome   : string = doc[0].nome,
+              familiaTag    : string = doc[0].tag;
+        console.log(familiaNome);
+      
+        var bemFilho;
 
-      for(k in produtos) {
-         prod.push({
-            "nome" : produtos[k]
-         });
-      }
-
-      var bemFamilia;
-
-      if(this.isEditable) {
-        bemFamilia 	= {
-            _id       : id,
-            _rev 		  : revision,
-	          nome      : nome,
-            tag       : tag,
-	          bens      : types,
-	          produtos  : prod,
-	          ativo     : ativo
-          };
-         this._DB.update(bemFamilia)
-           .then((data) =>
-           {
-              this._LOADER.hidePreloader();
-           });
-      }
-      else {
-        var timeStamp 	= new Date().toISOString();
-            bemFamilia = {
-              _id 		 : timeStamp,
-              nome     : nome,
-              tag      : tag,
-              bens     : types,
-              produtos : prod,
-              ativo    : ativo
+        if(this.isEditable) {
+          bemFilho 	= {
+              _id         : id,
+              _rev 		    : revision,
+              familiaId   : familiaId,
+              familiaNome : familiaNome,
+              familiaTag  : familiaTag,
+              fabricante  : fabricante,
+              capacidade  : capacidade,
+              nSerie      : nSerie,
+              dtFabric    : dtFabric,
+              ativo       : ativo
             };
-         this._DB.add(bemFamilia)
-        .then((data) =>
-        {
-            this._LOADER.hidePreloader();
-        });
-      }
-      this.closeModal(true);
+          this._DB.update(bemFilho)
+            .then((data) =>
+            {
+                this._LOADER.hidePreloader();
+            });
+        }
+        else {
+          var timeStamp 	= new Date().toISOString();
+              bemFilho = {
+                _id 		    : timeStamp,
+                familiaId   : familiaId,
+                familiaNome : familiaNome,
+                familiaTag  : familiaTag,
+                fabricante  : fabricante,
+                capacidade  : capacidade,
+                nSerie      : nSerie,
+                dtFabric    : dtFabric,
+                ativo       : ativo
+              };
+          this._DB.add(bemFilho)
+          .then((data) =>
+          {
+              this._LOADER.hidePreloader();
+          });
+        }
+        this.closeModal(true);
+      });
    }
 
-   closeModal(val = null) {
-      this.viewCtrl.dismiss(val);
+   closeModal(value = null) {
+      this.viewCtrl.dismiss(value);
    }
 
 }

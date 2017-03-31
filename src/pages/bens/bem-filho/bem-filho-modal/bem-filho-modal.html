@@ -4,85 +4,66 @@
          {{ title }}
       </ion-title>
       <ion-buttons start>
-         <button
-            ion-button
-            (click)="closeModal()">
-           <span
-              ion-text
-              color="primary"
-              showWhen="ios">Cancel</span>
-           <ion-icon
-              name="md-close"
-              showWhen="android,windows"></ion-icon>
+         <button ion-button
+                 (click)="closeModal()">
+           <span ion-text color="primary"
+                 showWhen="ios">Cancel</span>
+           <ion-icon name="md-close"
+                 showWhen="android,windows"></ion-icon>
          </button>
       </ion-buttons>
    </ion-toolbar>
 </ion-header>
 <ion-content>
-   <form
-      [formGroup]="form"
-      (ngSubmit)="save(form.value)">
+   <form [formGroup]="form" (ngSubmit)="save(form.value)">
 
    	  <ion-item-divider color="light">
-         <div *ngIf="!isEditable">
-            Adicionar 
-         </div>
-
-         <div *ngIf="isEditable">
-            Alterar
-         </div>
+         <div *ngIf="!isEditable">Adicionar</div>
+         <div *ngIf="isEditable">Alterar</div>
    	  </ion-item-divider>
       
       <ion-item>
-        <ion-label stacked>Familia do Bem</ion-label>
-        <ion-select
-            class="select"
+        <ion-label floating>Familia</ion-label>
+        <ion-select class="select"
             formControlName="familiaId" 
             [(ngModel)]="temFamiliaId">
             <ion-option *ngFor="let familia of familias" value="{{familia.id}}">{{familia.nome}}</ion-option>
         </ion-select>
       </ion-item>
 
-
    	  <ion-item>
-         <ion-label stacked>Nome:</ion-label>
-         <ion-input
-            type="text"
-            formControlName="nome"
-            [(ngModel)]="itemNome"></ion-input>
+         <ion-label floating>Fabricante:</ion-label>
+         <ion-input type="text"
+            formControlName="fabricante"
+            [(ngModel)]="itemFabricante"></ion-input>
    	  </ion-item>
 
    	  <ion-item>
-         <ion-label stacked>Tag:</ion-label>
-         <ion-input
-            type="text"
-            formControlName="tag"
-            [(ngModel)]="itemTag"></ion-input>
+         <ion-label floating>Modelo:</ion-label>
+         <ion-input type="text"
+            formControlName="modelo"
+            [(ngModel)]="itemModelo"></ion-input>
    	  </ion-item>
 
    	  <ion-item>
-         <ion-label stacked>Bens:</ion-label>
-         <ion-select
-            formControlName="bens"
-            multiple="true"
-            [(ngModel)]="itemBens">
-             <ion-option value="Primario">Primario</ion-option>
-             <ion-option value="Secundario">Secundario</ion-option>
-         </ion-select>
+         <ion-label floating>Capacidade:</ion-label>
+         <ion-input type="text"
+            formControlName="capacidade"
+            [(ngModel)]="itemCapacidade"></ion-input>
    	  </ion-item>
 
       <ion-item>
-         <ion-label stacked>Produtos:</ion-label>
-         <ion-select
-            formControlName="produtos"
-            multiple="true"
-            [(ngModel)]="itemProdutos">
-             <ion-option value="Cloro">Cloro</ion-option>
-             <ion-option value="Dioxido">Dioxido</ion-option>
-             <ion-option value="Pastinha">Pastinha</ion-option>
-             <ion-option value="PAC">PAC</ion-option>
-             <ion-option value="Outros">Outros</ion-option>
-         </ion-select>
+         <ion-label floating>Número Serie:</ion-label>
+         <ion-input type="text"
+            formControlName="nSerie"
+            [(ngModel)]="itemNSerie"></ion-input>
+   	  </ion-item>
+
+      <ion-item>
+         <ion-label floating>Data Fabricação:</ion-label>
+         <ion-input type="date"
+            formControlName="dtfabric"
+            [(ngModel)]="itemDtfabric"></ion-input>
    	  </ion-item>
       
       <ion-item>
@@ -90,26 +71,12 @@
             <ion-toggle [(ngModel)]="itemAtivo" formControlName="ativo" checked="false"></ion-toggle>
       </ion-item>
 
-
    	  <ion-item>
-   	     <input
-   	        type="hidden"
-   	        name="itemId">
-         <button
-           ion-button
-           block
-           color="primary"
-           text-center
-           padding-top
-           padding-bottom
+   	     <input type="hidden" name="itemId">
+         <button ion-button block color="primary" text-center padding-top padding-bottom
            [disabled]="!form.valid">
-            <div *ngIf="!isEditable">
-               Add a new item
-            </div>
-
-            <div *ngIf="isEditable">
-               Update this item
-            </div>
+            <div *ngIf="!isEditable">Adcionar item</div>
+            <div *ngIf="isEditable">Alterar item</div>
             </button>
    	  </ion-item>
 
