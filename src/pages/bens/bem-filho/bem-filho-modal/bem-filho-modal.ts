@@ -62,7 +62,7 @@ export class BemFilhoModalPage {
         });
 
         if(navParams.get('isEditable')){
-          let item 		    = navParams.get('item'), k  ;
+          let item 		    = navParams.get('item');
 
           this.itemId          = item._id;
           this.itemRevId 	     = item._rev;
@@ -112,6 +112,7 @@ export class BemFilhoModalPage {
               familiaNome : familiaNome,
               familiaTag  : familiaTag,
               fabricante  : fabricante,
+              modelo      : modelo,
               capacidade  : capacidade,
               nSerie      : nSerie,
               dtFabric    : dtFabric,
@@ -131,6 +132,7 @@ export class BemFilhoModalPage {
                 familiaNome : familiaNome,
                 familiaTag  : familiaTag,
                 fabricante  : fabricante,
+                modelo      : modelo,
                 capacidade  : capacidade,
                 nSerie      : nSerie,
                 dtFabric    : dtFabric,

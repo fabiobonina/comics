@@ -1,8 +1,6 @@
 <ion-header>
    <ion-toolbar>
-      <ion-title>
-         {{ title }}
-      </ion-title>
+      <ion-title>{{ title }}</ion-title>
       <ion-buttons start>
          <button ion-button
                  (click)="closeModal()">
@@ -23,47 +21,47 @@
    	  </ion-item-divider>
       
       <ion-item>
-        <ion-label floating>Familia</ion-label>
+        <ion-label stacked>Familia</ion-label>
         <ion-select class="select"
             formControlName="familiaId" 
-            [(ngModel)]="temFamiliaId">
-            <ion-option *ngFor="let familia of familias" value="{{familia.id}}">{{familia.nome}}</ion-option>
+            [(ngModel)]="itemFamiliaId">
+            <ion-option *ngFor="let familia of familias" value="{{familia._id}}">{{familia.nome}}</ion-option>
         </ion-select>
       </ion-item>
 
-   	  <ion-item>
+	<ion-item>
          <ion-label floating>Fabricante:</ion-label>
          <ion-input type="text"
             formControlName="fabricante"
             [(ngModel)]="itemFabricante"></ion-input>
-   	  </ion-item>
+   	</ion-item>
 
-   	  <ion-item>
+   	<ion-item>
          <ion-label floating>Modelo:</ion-label>
          <ion-input type="text"
             formControlName="modelo"
             [(ngModel)]="itemModelo"></ion-input>
-   	  </ion-item>
+   	</ion-item>
 
-   	  <ion-item>
+   	<ion-item>
          <ion-label floating>Capacidade:</ion-label>
          <ion-input type="text"
             formControlName="capacidade"
             [(ngModel)]="itemCapacidade"></ion-input>
-   	  </ion-item>
+   	</ion-item>
 
       <ion-item>
          <ion-label floating>Número Serie:</ion-label>
          <ion-input type="text"
             formControlName="nSerie"
             [(ngModel)]="itemNSerie"></ion-input>
-   	  </ion-item>
+   	</ion-item>
 
       <ion-item>
          <ion-label floating>Data Fabricação:</ion-label>
          <ion-input type="date"
-            formControlName="dtfabric"
-            [(ngModel)]="itemDtfabric"></ion-input>
+            formControlName="dtFabric"
+            [(ngModel)]="itemDtFabric"></ion-input>
    	  </ion-item>
       
       <ion-item>

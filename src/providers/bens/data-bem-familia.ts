@@ -29,8 +29,8 @@ export class DataBemFamilia {
 
    inicializarDB(){
         this._DB 			= new PouchDB(this._nomeDB);
-       this._remoteDB 		= 'http://192.168.10.186:5984/' + this._nomeDB;
-       //this._remoteDB 		= 'http://localhost:5984/' + this._nomeDB;
+       //this._remoteDB 		= 'http://192.168.10.186:5984/' + this._nomeDB;
+        this._remoteDB 		= 'http://localhost:5984/' + this._nomeDB;
         this._syncOpts 		= { live 	  :true,
                                 retry 	  :true,
                                 continuous:true };

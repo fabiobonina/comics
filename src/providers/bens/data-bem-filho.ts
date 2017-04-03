@@ -8,10 +8,10 @@ import PouchDB from 'pouchdb';
 export class DataBemFilho {
 
   public _DB 		    : any;
-  private success 	: boolean = true;
+  private success 	    : boolean = true;
   private _remoteDB 	: any;
   private _syncOpts 	: any;
-  private _nomeDB     : string = 'bens_filho';
+  private _nomeDB       : string = 'bens_filho';
 
   constructor(public http      : Http,
               public alertCtrl : AlertController) {
@@ -20,8 +20,8 @@ export class DataBemFilho {
 
    inicializarDB(){
        this._DB 			  = new PouchDB(this._nomeDB);
-       this._remoteDB 	= 'http://192.168.10.186:5984/' + this._nomeDB;
-       //this._remoteDB = 'http://localhost:5984/' + this._nomeDB;
+       //this._remoteDB 	= 'http://192.168.10.186:5984/' + this._nomeDB;
+       this._remoteDB = 'http://localhost:5984/' + this._nomeDB;
         this._syncOpts 	= { live 	    :true,
                             retry 	  :true,
                             continuous:true };
@@ -109,15 +109,8 @@ export class DataBemFilho {
          this._DB.get(id) 
          .then((doc)=> {
             var item 			= [];
-            item.push( {
-                id 		    : id,
-                rev		    : doc._rev,
-                nome		  : doc.nome,
-                tag       : doc.tag,
-                bens      : doc.bens,
-                produtos  : doc.produtos,
-                ativo		  : doc.ativo
-            });
+            item.push( doc );
+
             resolve(item);
          })
       });
